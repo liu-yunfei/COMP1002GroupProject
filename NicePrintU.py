@@ -1,3 +1,5 @@
+"""This function is used to print a user's profile
+it receives a user's name and return True while name found, return False when name not found"""
 def NicePrintU(userName):
     user = open('user.txt')
     userInfoList = []
