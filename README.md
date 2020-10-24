@@ -1,5 +1,6 @@
 # COMP1002GroupProject
 The Hong Kong Polytechnic University Subject COMP1002 Group 16 Project
+
 The programming standard
 1. Please use meaningful variable name, class name and function name. Never use stupid name such as "a = 1" or "def qwert():".
 2. Please obey camel-case naming method. Use lower camel case for variable (e.g. userName, lowerCamelCase). Use upper camel case for class and function name (e.g. IsFriend, DirectReport).
