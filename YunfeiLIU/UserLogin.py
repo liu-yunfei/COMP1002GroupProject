@@ -1,7 +1,7 @@
 """This function is used for user login
 it use userdata.txt in the same folder to check the login
 if the user do not have an account, it will register one
-it returns True while the user log in successfully
+it returns username while the user log in successfully
 
 Written by Yunfei LIU
 Edit log:
@@ -66,7 +66,7 @@ def UserLogin():
         print("If it is not your user name, just press enter to reset")
         password = str(input("Please input your password: "))
         if CheckPassword(userName,password):
-            return True
+            return userName
         else:
             print("Wrong Password \n")
 
