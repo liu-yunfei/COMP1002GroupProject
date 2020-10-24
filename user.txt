@@ -1,4 +1,5 @@
-CHANTaiman,123456,01/01/2020,12345678,Bob;Leo;Tom,Chan's post1;Chan's post2
-Bob,654321,22/10/2003,12344432,CHANTaiman;Leo,Bob's post
-Leo,1234,11/04/1999,,CHANTaiman;Bob,Leo's post1;Leo's post2
-Tom,4321,,,CHANTaiman,Bob's post
+CHANTaiman,123456,01/01/2020,12345678,Bob;Leo;Tom,Chan's post1;Chan's post2;
+Bob,654321,22/10/2003,12344432,CHANTaiman;Leo;Jack,Bob's post;
+Leo,1234,11/04/1999, ,CHANTaiman;Bob,Leo's post1;Leo's post2;
+Tom,4321, , ,CHANTaiman,Bob's post;
+Jack,987654, ,88888888,Bob;,Jack's post;
