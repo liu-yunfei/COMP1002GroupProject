@@ -6,11 +6,17 @@ Edit log:
 Oct 27, 2020 created"""
 def IsDirectSource(post1,post2):
     try:
-        postData1 = open('post/'+post1+'.txt')
-        postData2 = open('post/'+post2+'.txt')
+        postData2 = open('post/'+post2+'.txt',encoding = 'UTF-8')
     except IOError:
         print('Fail to open the file\n')
         return False
-    title1 = postData1.readline()
-    author1 = postData1.readline()
-    quotation
+    line1 = postData2.readline()
+    line2 = postData2.readline()
+    line3 = postData2.readline()
+    quotation2 = line3.strip()
+    if quotation2 == post1:
+        postData2.close()
+        return True
+    postData2.close()
+    return False
+
