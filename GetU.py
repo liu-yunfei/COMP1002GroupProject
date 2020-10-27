@@ -25,6 +25,7 @@ def GetU():
             return True
         else:
             print("\nCanceled")
+            writeFile.close()
             return False
 
     #This function is used to add user from file
@@ -69,6 +70,7 @@ def GetU():
                 return True
             else:
                 print("\nCanceled\n")
+                writeFile.close()
                 return False
 
 

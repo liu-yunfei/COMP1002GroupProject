@@ -42,8 +42,10 @@ def NicePrintU(userName):
                 postTitleList = postList[index].split(';')
                 for postTitle in postTitleList:
                     print(postTitle)
+            user.close()
             return True
     print("Cannot find a user named",userName,'\n')
+    user.close()
     return False
 
 
