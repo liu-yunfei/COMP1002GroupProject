@@ -13,7 +13,7 @@ def GetA():
             existFile = open('post/'+title+'.txt','r',encoding= 'UTF-8')
         except IOError:
             author = str(input("Please enter the author: "))
-            quote = str(input("Please enter the quotation, separate with ';' and also end with ';'\nOr enter 'null' if no quotation: "))       
+            quote = str(input("Please enter the quotation. Or enter 'null' if no quotation: "))       
             print("Please enter the content, end with EOF(just type Ctrl+D or Ctrl+Z or Ctrl+C)\n")
             content=[]
             while True:

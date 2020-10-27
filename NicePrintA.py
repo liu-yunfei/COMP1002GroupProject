@@ -15,17 +15,14 @@ def NicePrintA(postName):
     authorString = post.readline()
     author = authorString.strip()
     quoteString = post.readline()
-    quote = str(quoteString.strip()).split(';')
+    quote = quoteString.strip())
     content = []
     for contentLine in post:
         content.append(contentLine)
     print("\nFile found\n")
     print("Title: "+title[1:])
     print("Author: "+author)
-    print("Quote: ")
-    if quote != ['null']:
-        for quoteTitle in quote:
-            print(quoteTitle)
+    print("Quote: "+quote)
     print("The following are the content: \n")
     for contentLine in content:
         print(contentLine)
