@@ -1,5 +1,5 @@
 ﻿"""This function is used to return the direct report
-it receives a post title and return a list of direct report, return a empty list when no report
+it receives a post title and return a list of direct report, return an empty list when no report
 
 Written by Yunfei LIU
 Edit log:
@@ -20,6 +20,11 @@ def DirectReport(anchor):
         fileQuote = readFile.readline()
         report = fileQuote.strip()
         if report == anchor:
-            reportList.append(title[1:])
+            if ord(title[0])==65279:
+                reportList.append(title[1:])
+            else:
+                reportList.append(title)
         readFile.close()
     return reportList
+
+print(DirectReport("testfather"))

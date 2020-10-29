@@ -93,3 +93,4 @@ def GetA():
             GetFromFile()
         if commandChar == 'E' or commandChar == 'e':
             return True
+

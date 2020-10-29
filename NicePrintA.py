@@ -15,7 +15,7 @@ def NicePrintA(postName):
     authorString = post.readline()
     author = authorString.strip()
     quoteString = post.readline()
-    quote = quoteString.strip())
+    quote = quoteString.strip()
     content = []
     for contentLine in post:
         content.append(contentLine)
@@ -29,4 +29,4 @@ def NicePrintA(postName):
     post.close()
     return True
 
-NicePrintA("Jack's post")
+
