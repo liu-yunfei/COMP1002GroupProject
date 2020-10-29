@@ -27,4 +27,3 @@ def DirectReport(anchor):
         readFile.close()
     return reportList
 
-print(DirectReport("testfather"))
