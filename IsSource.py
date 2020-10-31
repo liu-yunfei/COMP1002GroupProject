@@ -3,30 +3,41 @@
 Written by Muyuan LI"""
 
 
-def IsDirectSource(post1, post2):
+def DirectSource(post):
     try:
-        postData2 = open('post/' + post2 + '.txt', encoding='UTF-8')
+        postData = open('post/' + post + '.txt', encoding='UTF-8')
     except IOError:
         print('Fail to open the file\n')
+        return 'Fail'
+    line1 = postData.readline()
+    line2 = postData.readline()
+    line3 = postData.readline()
+    quotation = line3.strip()
+    postData.close()
+    return quotation
+
+
+def IsSource(sourcePost, reportPost):
+    #This part is used to ensure the file names are valid
+    try:
+        fin1 = open('post/' + sourcePost + '.txt', encoding='UTF-8')
+        fin2 = open('post/' + reportPost + '.txt', encoding='UTF-8')
+        fin1.close()
+        fin2.close()
+    except IOError:
+        print("Fail to open the file")
         return False
-    line1 = postData2.readline()
-    line2 = postData2.readline()
-    line3 = postData2.readline()
-    quotation2 = line3.strip()
-    if quotation2 == post1:
-        postData2.close()
-        return quotation2
-    postData2.close()
-    return False
 
-
-def isSource(sourcePost, reportPost):
-    if sourcePost == IsDirectSource(sourcePost, reportPost):
+    source = sourcePost
+    report = reportPost
+    if sourcePost == DirectSource(reportPost):
         return True
-    while IsDirectSource(sourcePost, reportPost) != False:
-        if sourcePost == source:
+    while (report != 'null'):
+        print(source,report)
+        if report == source:
             return True
-            sourcePost = IsDirectSource(sourcePost, reportPost)
+        if report == 'null':
+            return False
+        report = DirectSource(report)
     return False
 
-print(isSource("testchildchild2","textroot"))
