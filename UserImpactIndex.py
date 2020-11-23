@@ -76,7 +76,7 @@ def PostImpactIndex(anchor):
     return "{:.3f}".format(impactIndex)
 
 def UserImpactIndex(userName):
-    user = open('user.txt')
+    user = open('user.txt',encoding = 'UTF-8')
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
@@ -98,3 +98,4 @@ def UserImpactIndex(userName):
     impactIndex = math.log(impactSum,math.e)
     return "{:.3f}".format(impactIndex)
 
+print(UserImpactIndex('Bob'))

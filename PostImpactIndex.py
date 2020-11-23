@@ -66,9 +66,9 @@ def PostImpactIndex(anchor):
         reportList.extend(DirectReport(anchorItem))
         tempList.extend(DirectReport(anchorItem))
         if DirectReport(anchorItem) != []:
-            count += 1
             for dictKey in PostImpactIndex.countDict:
                 PostImpactIndex.countDict[dictKey] += 1
+
     anchorList = tempList
     impactIndex = 0
     for dictKey in PostImpactIndex.countDict:
