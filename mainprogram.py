@@ -685,11 +685,43 @@ def UserImpactIndex(userName):
     impactIndex = math.log(impactSum+1,math.e)
     return "{:.3f}".format(impactIndex)
 
+"""This function is used for finding KOL
+It receives a mininum impact index and a percentage of KOLs
+It returns a list of KOL names and their impact index
+
+Written by Yunfei LIU  Nov 24,2020"""
+def KOL(miniIndex,percentage):
+    percentage = float(percentage)
+    if percentage >100 or percentage < 0:
+        return []
+    user = open('user.txt')
+    userInfoList = []
+    for userInfo in user:
+        userInfoList.append(userInfo.strip())
+    nameList = []
+    for userInfo in userInfoList:
+        name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+        nameList.append(name)
+    impactList = []
+    for i in nameList:
+        impactList.append([i,UserImpactIndex(i)])
+    kolNumber = int((len(nameList)*percentage/100)//1)
+
+    def Verify(list):
+        return list[1]
+
+    impactList.sort(key=Verify)
+    impactList.reverse()
+    kolList = []
+    for i in range(kolNumber):
+        if float(impactList[i][1]) >= float(miniIndex):
+            kolList.append(impactList[i])
+    return kolList
 
 """This function is main function in terminal.
 It receives void and return 0 when no error
 
-Written by Yunfei LIU  Nov23, 2020"""
+Written by Yunfei LIU  Nov 23, 2020"""
 def main():
     print("Copyright 2020 Mu Yuan LI, Owen CHAN, Yun Fei LIU\nAll rights reserved.\n\n")
     while True:
@@ -705,7 +737,7 @@ def main():
                 if funcChar == 'R':
                     break
                 if funcChar == 'A':
-                    print("\n1.UserImpactIndex\n2.PostImpactIndex\n3.FriendshipIndex\n4.QuotationIndex\n")
+                    print("\n1.UserImpactIndex\n2.PostImpactIndex\n3.FriendshipIndex\n4.QuotationIndex\n5.FindKOL\n")
                     choiceChar = str(input("Please enter numbers to use functions, other to return: "))
                     if choiceChar == '1':
                         userName = str(input("\nEnter the user name: "))
@@ -721,6 +753,13 @@ def main():
                         userName1 = str(input("\nEnter user name 1: "))
                         userName2 = str(input("\nEnter user name 2: "))
                         print("\nThe quotation index between %s and %s is %s" %(userName1,userName2,QuotationIndex(userName1,userName2)))
+                    elif choiceChar == '5':
+                        miniIndex = float(input("Please enter the minimum index of KOL: "))
+                        percentage = float(input("Please enter the percentage of KOL: "))
+                        print("\nThe KOL list\n")
+                        for i in KOL(miniIndex,percentage):
+                            print("Name:%s\nImpact Index:%s\n" %(i[0],i[1]))
+
                 if funcChar == 'B':
                     print("1.Anchor\n2.DirectReport\n3.GetA\n4.GetU\n5.IsDirectSource\n6.IsSource\n7.IsFriend\n8.NicePrintA\n9.NicePrintU\n10.Report\n")
                     choiceChar = str(input("Please enter numbers to use functions, other to return: "))
