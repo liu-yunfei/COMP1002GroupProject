@@ -20,7 +20,7 @@ def FriendshipIndex(user1,user2):
         try:
             userIndex = nameList.index(userName)
         except ValueError:
-            return 0
+            return []
         userPostList = postList[userIndex].split(';')
         return userPostList
     
@@ -61,3 +61,4 @@ def FriendshipIndex(user1,user2):
     friendshipIndex = (((eachOtherQuote/len(user1Quote))**2)+((eachOtherQuote/len(user2Quote))**2))**0.5
     return "{:.3f}".format(friendshipIndex)
 
+print(FriendshipIndex('CHANTaiman','Bob'))
