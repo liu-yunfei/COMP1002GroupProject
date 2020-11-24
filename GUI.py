@@ -258,7 +258,50 @@ def GUI():
         def GUIAnchor():
             return 0
         def GUIDirectReport():
-            return 0
+            dR = tk.Tk()
+            dR.title('Direct Report')
+            dR.geometry("600x400")
+            titleLabel = tk.Label(dR,text = 'Direct Report', font = ('Arial',16)).pack()
+            emptyLabel = tk.Label(dR,text = ' ', font = ('Arial',16),height = 5)
+            hintLabel = tk.Label(dR, text = 'Enter Post Title',font = ('Arial',12))
+            
+            leftFrame = tk.Frame(dR)
+            middleFrame = tk.Frame(dR)
+            rightFrame = tk.Frame(dR)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            
+            leftLabel = tk.Label(leftFrame,text = 'Post', font = ('Arial',12)).pack()
+            GUIDirectReport.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.postList:
+                GUIDirectReport.leftBox.insert('end',item)
+            GUIDirectReport.leftBox.pack()
+
+            var = tk.StringVar(dR)
+            GUIDirectReport.choice = ''
+            def getReport():
+                GUIDirectReport.choice = var.get()
+                printReport()
+
+            emptyLabel.pack()
+            hintLabel.pack()
+            reportEntry = tk.Entry(dR,show=None,textvariable=var).pack()
+            reportButton = tk.Button(dR,text="Find Direct Report",command = getReport,font = ('Arial',16),height = 2,width=20,bg = 'light grey').pack(side = 'bottom')
+
+            rightLabel = tk.Label(rightFrame,text = 'Direct Report', font = ('Arial',12)).pack()
+            GUIDirectReport.rightBox = tk.Listbox(rightFrame,height = 15)
+
+            def printReport():
+                reportList = DirectReport(GUIDirectReport.choice)
+                GUIDirectReport.rightBox.delete(0,'end')
+                for item in reportList:
+                    GUIDirectReport.rightBox.insert('end',item)
+
+            
+            GUIDirectReport.rightBox.pack()
+            dR.mainloop()
+
         def GUIGetA():
             return 0
         def GUIGetU():
@@ -270,11 +313,154 @@ def GUI():
         def GUIIsFriend():
             return 0
         def GUINicePrintU():
-            return 0
+            def EditNicePrintU(userName):
+                user = open('user.txt')
+                userInfoList = []
+                for userInfo in user:
+                    userInfoList.append(userInfo.strip())
+                nameList = []
+                passwordList = []
+                birthdayList = []
+                phoneNumberList = []
+                friendList = []
+                postList = []
+                for userInfo in userInfoList:
+                    name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                    nameList.append(name)
+                    passwordList.append(password)
+                    birthdayList.append(birthday)
+                    phoneNumberList.append(phoneNumber)
+                    friendList.append(friend)
+                    postList.append(post)
+                index = -1
+                name = ''
+                password = ''
+                birthday = ''
+                phoneNumber = ''
+                friendNameList = []
+                postTitleList = []
+                for alluser in nameList:
+                    index += 1
+                    if alluser == userName:
+                        name = nameList[index]
+                        password = passwordList[index]
+                        birthday = birthdayList[index]
+                        phoneNumber = phoneNumberList[index]
+                        friendNameList = friendList[index].split(';')
+                        postTitleList = postList[index].split(';')
+                        
+                user.close()
+                return [name,password,birthday,phoneNumber,friendNameList,postTitleList]
+
+            NPU = tk.Tk()
+            NPU.title('Nice Print User')
+            NPU.geometry("600x400")
+            titleLabel = tk.Label(NPU,text = 'Nice Print User', font = ('Arial',16)).pack()
+
+            leftFrame = tk.Frame(NPU)
+            middleFrame = tk.Frame(NPU)
+            rightFrame = tk.Frame(NPU)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            middleLeft = tk.Frame(middleFrame)
+            middleRight = tk.Frame(middleFrame)
+            middleLeft.pack(side = 'left')
+            middleRight.pack(side = 'right')
+            middleBottom = tk.Frame(NPU)
+            middleBottom.pack()
+            
+            leftLabel = tk.Label(leftFrame,text = 'Users', font = ('Arial',12)).pack()
+            GUINicePrintU.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.nameList:
+                GUINicePrintU.leftBox.insert('end',item)
+            GUINicePrintU.leftBox.pack()
+
+            nameVar = tk.StringVar(NPU)
+            passVar = tk.StringVar(NPU)
+            phoneVar = tk.StringVar(NPU)
+            birthdayVar = tk.StringVar(NPU)
+
+            nameLabel = tk.Label(middleLeft,text = 'Enter User Name',bg = 'yellow').pack()
+            nameEntry = tk.Entry(middleRight,show = None,textvariable = nameVar).pack()
+            emptyLabel1 = tk.Label(middleLeft,text = '').pack()
+            emptyLabel2 = tk.Label(middleRight,text = '').pack()
+            passLabel = tk.Label(middleLeft,text = 'Password').pack()
+            passEntry = tk.Entry(middleRight,show = None,textvariable = passVar).pack()
+            birthdayLabel = tk.Label(middleLeft, text = 'Birthday').pack()
+            birthdayEntry = tk.Entry(middleRight, show = None, textvariable = birthdayVar).pack()
+            phoneLabel = tk.Label(middleLeft, text = 'Phone').pack()
+            phoneEntry = tk.Entry(middleRight, show = None, textvariable = phoneVar).pack()
+            friendLabel = tk.Label(middleLeft, text = 'Friend').pack()
+            GUINicePrintU.friendBox = tk.Listbox(middleLeft,height = 7)
+            GUINicePrintU.friendBox.pack()
+            postLabel = tk.Label(middleRight, text = 'Post').pack()
+            GUINicePrintU.postBox = tk.Listbox(middleRight, height = 7)
+            GUINicePrintU.postBox.pack()
+
+            def GetData():
+                userName = nameVar.get()
+                userData = EditNicePrintU(userName)
+                passVar.set(userData[1])
+                phoneVar.set(userData[3])
+                birthdayVar.set(userData[2])
+                GUINicePrintU.friendBox.delete(0,'end')
+                for item in userData[4]:
+                    GUINicePrintU.friendBox.insert('end',item)
+                GUINicePrintU.postBox.delete(0,'end')
+                for post in userData[5]:
+                    GUINicePrintU.postBox.insert('end',post)
+
+            printButton = tk.Button(middleBottom,text = 'Print User',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
+
+            NPU.mainloop()
+
         def GUINicePrintA():
             return 0
         def GUIReport():
-            return 0
+            R = tk.Tk()
+            R.title('Report')
+            R.geometry("600x400")
+            titleLabel = tk.Label(R,text = 'Report', font = ('Arial',16)).pack()
+            emptyLabel = tk.Label(R,text = ' ', font = ('Arial',16),height = 5)
+            hintLabel = tk.Label(R, text = 'Enter Post Title',font = ('Arial',12))
+            
+            leftFrame = tk.Frame(R)
+            middleFrame = tk.Frame(R)
+            rightFrame = tk.Frame(R)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            
+            leftLabel = tk.Label(leftFrame,text = 'Post', font = ('Arial',12)).pack()
+            GUIReport.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.postList:
+                GUIReport.leftBox.insert('end',item)
+            GUIReport.leftBox.pack()
+
+            var = tk.StringVar(R)
+            GUIReport.choice = ''
+            def getReport():
+                GUIReport.choice = var.get()
+                printReport()
+
+            emptyLabel.pack()
+            hintLabel.pack()
+            reportEntry = tk.Entry(R,show=None,textvariable=var).pack()
+            reportButton = tk.Button(R,text="Find Report",command = getReport,font = ('Arial',16),height = 2,width=20,bg = 'light grey').pack(side = 'bottom')
+
+            rightLabel = tk.Label(rightFrame,text = 'Report', font = ('Arial',12)).pack()
+            GUIReport.rightBox = tk.Listbox(rightFrame,height = 15)
+
+            def printReport():
+                reportList = Report(GUIReport.choice)
+                GUIReport.rightBox.delete(0,'end')
+                for item in reportList:
+                    GUIReport.rightBox.insert('end',item)
+
+            
+            GUIReport.rightBox.pack()
+            R.mainloop()
         
         func1 = tk.Button(frame_l,text = "Anchor", font = ("Arial",12),width = 20, height = 2,bg = 'light grey',command = GUIAnchor).pack()
         func2 = tk.Button(frame_l,text = "Direct Report", font = ("Arial",12),width = 20, height = 2,bg = 'light grey',command = GUIDirectReport).pack()
