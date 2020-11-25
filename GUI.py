@@ -281,7 +281,8 @@ def GUI():
             var = tk.StringVar(dR)
             GUIDirectReport.choice = ''
             def getReport():
-                GUIDirectReport.choice = var.get()
+                var.set(GUI.postList[GUIDirectReport.leftBox.curselection()[0]])
+                GUIDirectReport.choice = GUI.postList[GUIDirectReport.leftBox.curselection()[0]]
                 printReport()
 
             emptyLabel.pack()
@@ -307,11 +308,122 @@ def GUI():
         def GUIGetU():
             return 0
         def GUIIsDirectSource():
-            return 0
+            isDirectSource = tk.Tk()
+            isDirectSource.title('Is Direct Source?')
+            isDirectSource.geometry("600x400")
+            titleLabel = tk.Label(isDirectSource,text = 'Is Direct Source?', font = ('Arial',16)).pack()
+
+            leftFrame = tk.Frame(isDirectSource)
+            middleFrame = tk.Frame(isDirectSource)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            
+            leftLabel = tk.Label(leftFrame,text = 'Post', font = ('Arial',12)).pack()
+            isDirectSource.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.postList:
+                isDirectSource.leftBox.insert('end',item)
+            isDirectSource.leftBox.pack()
+
+            var1 = tk.StringVar(isDirectSource)
+            var2 = tk.StringVar(isDirectSource)
+            indexVar = tk.StringVar(isDirectSource)
+            emptyLabel = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            user1Label = tk.Label(middleFrame,text = "Enter Source",font = ('Arial',12)).pack()
+            user1Entry = tk.Entry(middleFrame,show = None,textvariable = var1).pack()
+            user2Label = tk.Label(middleFrame,text = "Enter Report",font = ('Arial',12)).pack()
+            user2Entry = tk.Entry(middleFrame,show = None,textvariable = var2).pack()
+
+            def GetVar():
+               indexNumber = IsDirectSource(var1.get(),var2.get())
+               if indexNumber == True:
+                   indexVar.set("Yes")
+               elif indexNumber == False:
+                   indexVar.set("No")
+
+            checkButton = tk.Button(middleFrame,text = "Check",command = GetVar,height=2,width=10,font = ('Arial',16),bg = 'light grey').pack()
+            emptyLabel2 = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            hintLabel = tk.Label(middleFrame,text = "Is Direct Source?",font = ('Arial',12)).pack()
+            numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
+            isDirectSource.mainloop()
+
         def GUIIsSource():
-            return 0
+            isSource = tk.Tk()
+            isSource.title('Is Source?')
+            isSource.geometry("600x400")
+            titleLabel = tk.Label(isSource,text = 'Is Source?', font = ('Arial',16)).pack()
+
+            leftFrame = tk.Frame(isSource)
+            middleFrame = tk.Frame(isSource)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            
+            leftLabel = tk.Label(leftFrame,text = 'Post', font = ('Arial',12)).pack()
+            isSource.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.postList:
+                isSource.leftBox.insert('end',item)
+            isSource.leftBox.pack()
+
+            var1 = tk.StringVar(isSource)
+            var2 = tk.StringVar(isSource)
+            indexVar = tk.StringVar(isSource)
+            emptyLabel = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            user1Label = tk.Label(middleFrame,text = "Enter Source",font = ('Arial',12)).pack()
+            user1Entry = tk.Entry(middleFrame,show = None,textvariable = var1).pack()
+            user2Label = tk.Label(middleFrame,text = "Enter Report",font = ('Arial',12)).pack()
+            user2Entry = tk.Entry(middleFrame,show = None,textvariable = var2).pack()
+
+            def GetVar():
+               indexNumber = IsSource(var1.get(),var2.get())
+               if indexNumber == True:
+                   indexVar.set("Yes")
+               elif indexNumber == False:
+                   indexVar.set("No")
+
+            checkButton = tk.Button(middleFrame,text = "Check",command = GetVar,height=2,width=10,font = ('Arial',16),bg = 'light grey').pack()
+            emptyLabel2 = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            hintLabel = tk.Label(middleFrame,text = "Is Source?",font = ('Arial',12)).pack()
+            numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
+            isSource.mainloop()
+
         def GUIIsFriend():
-            return 0
+            isFriend = tk.Tk()
+            isFriend.title('Is Friend?')
+            isFriend.geometry("600x400")
+            titleLabel = tk.Label(isFriend,text = 'Is Friend?', font = ('Arial',16)).pack()
+
+            leftFrame = tk.Frame(isFriend)
+            middleFrame = tk.Frame(isFriend)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            
+            leftLabel = tk.Label(leftFrame,text = 'Users', font = ('Arial',12)).pack()
+            GUIIsFriend.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.nameList:
+                GUIIsFriend.leftBox.insert('end',item)
+            GUIIsFriend.leftBox.pack()
+
+            var1 = tk.StringVar(isFriend)
+            var2 = tk.StringVar(isFriend)
+            indexVar = tk.StringVar(isFriend)
+            emptyLabel = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            user1Label = tk.Label(middleFrame,text = "Enter User 1",font = ('Arial',12)).pack()
+            user1Entry = tk.Entry(middleFrame,show = None,textvariable = var1).pack()
+            user2Label = tk.Label(middleFrame,text = "Enter User 2",font = ('Arial',12)).pack()
+            user2Entry = tk.Entry(middleFrame,show = None,textvariable = var2).pack()
+
+            def GetVar():
+               indexNumber = IsFriend(var1.get(),var2.get())
+               if indexNumber == True:
+                   indexVar.set("Yes")
+               elif indexNumber == False:
+                   indexVar.set("No")
+
+            checkButton = tk.Button(middleFrame,text = "Check",command = GetVar,height=2,width=10,font = ('Arial',16),bg = 'light grey').pack()
+            emptyLabel2 = tk.Label(middleFrame,text = ' ',font = ('Arial',16),height=2).pack()
+            hintLabel = tk.Label(middleFrame,text = "user 1 and user 2 are friends?",font = ('Arial',12)).pack()
+            numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
+            isFriend.mainloop()
+
         def GUINicePrintU():
             def EditNicePrintU(userName):
                 user = open('user.txt')
@@ -370,7 +482,7 @@ def GUI():
             middleBottom = tk.Frame(NPU)
             middleBottom.pack()
             
-            leftLabel = tk.Label(leftFrame,text = 'Users', font = ('Arial',12)).pack()
+            leftLabel = tk.Label(leftFrame,text = 'Choose User', font = ('Arial',12)).pack()
             GUINicePrintU.leftBox = tk.Listbox(leftFrame,height = 15)
             for item in GUI.nameList:
                 GUINicePrintU.leftBox.insert('end',item)
@@ -381,7 +493,7 @@ def GUI():
             phoneVar = tk.StringVar(NPU)
             birthdayVar = tk.StringVar(NPU)
 
-            nameLabel = tk.Label(middleLeft,text = 'Enter User Name',bg = 'yellow').pack()
+            nameLabel = tk.Label(middleLeft,text = 'User Name').pack()
             nameEntry = tk.Entry(middleRight,show = None,textvariable = nameVar).pack()
             emptyLabel1 = tk.Label(middleLeft,text = '').pack()
             emptyLabel2 = tk.Label(middleRight,text = '').pack()
@@ -399,7 +511,8 @@ def GUI():
             GUINicePrintU.postBox.pack()
 
             def GetData():
-                userName = nameVar.get()
+                nameVar.set(GUI.nameList[GUINicePrintU.leftBox.curselection()[0]])
+                userName = GUI.nameList[GUINicePrintU.leftBox.curselection()[0]]
                 userData = EditNicePrintU(userName)
                 passVar.set(userData[1])
                 phoneVar.set(userData[3])
@@ -416,14 +529,87 @@ def GUI():
             NPU.mainloop()
 
         def GUINicePrintA():
-            return 0
+            def EditNicePrintA(postName):
+                try:
+                    post = open('post/'+str(postName)+'.txt',encoding = 'UTF-8')
+                except IOError:
+                    return ['','','',['']]
+                titleString = post.readline()
+                title = titleString.strip()
+                authorString = post.readline()
+                author = authorString.strip()
+                quoteString = post.readline()
+                quote = quoteString.strip()
+                content = []
+                for contentLine in post:
+                    content.append(contentLine)
+                post.close()
+                return [title,author,quote,content]
+
+            NPA = tk.Tk()
+            NPA.title('Nice Print Article')
+            NPA.geometry("600x400")
+            titleLabel = tk.Label(NPA,text = 'Nice Print Aritcle', font = ('Arial',16)).pack()
+
+            leftFrame = tk.Frame(NPA)
+            middleFrame = tk.Frame(NPA)
+            rightFrame = tk.Frame(NPA)
+            leftFrame.pack(side = 'left')
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            middleLeft = tk.Frame(middleFrame)
+            middleRight = tk.Frame(middleFrame)
+            middleLeft.pack(side = 'left')
+            middleRight.pack(side = 'right')
+            middleBottom = tk.Frame(NPA)
+            middleBottom.pack()
+            middleDown = tk.Frame(middleFrame)
+            
+            leftLabel = tk.Label(leftFrame,text = 'Choose Post', font = ('Arial',12)).pack()
+            GUINicePrintA.leftBox = tk.Listbox(leftFrame,height = 15)
+            for item in GUI.postList:
+                GUINicePrintA.leftBox.insert('end',item)
+            GUINicePrintA.leftBox.pack()
+
+            titleVar = tk.StringVar(NPA)
+            authorVar = tk.StringVar(NPA)
+            quoteVar = tk.StringVar(NPA)
+            contentVar = tk.StringVar(NPA)
+
+            emptyLebel3 = tk.Label(middleLeft,text='',font = ('Arial',6)).pack()
+            titleLabel = tk.Label(middleLeft,text = 'Post Title').pack()
+            titleEntry = tk.Entry(middleRight,show = None,textvariable = titleVar).pack()
+            emptyLabel1 = tk.Label(middleLeft,text = '').pack()
+            emptyLabel2 = tk.Label(middleRight,text = '').pack()
+            authorLabel = tk.Label(middleLeft,text = 'Author').pack()
+            authorEntry = tk.Entry(middleRight,show = None,textvariable = authorVar).pack()
+            quoteLabel = tk.Label(middleLeft, text = 'Quotation').pack()
+            quoteEntry = tk.Entry(middleRight, show = None, textvariable = quoteVar).pack()
+            
+            contentLabel = tk.Label(middleLeft, text = 'Content').pack()
+            GUINicePrintA.contentText = tk.Text(middleBottom,height = 7)
+            GUINicePrintA.contentText.pack()
+
+            def GetData():
+                titleVar.set(GUI.postList[GUINicePrintA.leftBox.curselection()[0]])
+                postName = GUI.postList[GUINicePrintA.leftBox.curselection()[0]]
+                userData = EditNicePrintA(postName)
+                authorVar.set(userData[1])
+                quoteVar.set(userData[2])
+                GUINicePrintA.contentText.delete('1.0','end')
+                for item in userData[3]:
+                    GUINicePrintA.contentText.insert('end',item)
+
+            printButton = tk.Button(middleBottom,text = 'Print Post',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
+
+            NPA.mainloop()
         def GUIReport():
             R = tk.Tk()
             R.title('Report')
             R.geometry("600x400")
             titleLabel = tk.Label(R,text = 'Report', font = ('Arial',16)).pack()
             emptyLabel = tk.Label(R,text = ' ', font = ('Arial',16),height = 5)
-            hintLabel = tk.Label(R, text = 'Enter Post Title',font = ('Arial',12))
+            hintLabel = tk.Label(R, text = 'Post Title',font = ('Arial',12))
             
             leftFrame = tk.Frame(R)
             middleFrame = tk.Frame(R)
@@ -432,16 +618,18 @@ def GUI():
             middleFrame.pack()
             rightFrame.pack(side = 'right')
             
-            leftLabel = tk.Label(leftFrame,text = 'Post', font = ('Arial',12)).pack()
+            leftLabel = tk.Label(leftFrame,text = 'Choose Post', font = ('Arial',12)).pack()
             GUIReport.leftBox = tk.Listbox(leftFrame,height = 15)
             for item in GUI.postList:
                 GUIReport.leftBox.insert('end',item)
             GUIReport.leftBox.pack()
+           
 
             var = tk.StringVar(R)
             GUIReport.choice = ''
             def getReport():
-                GUIReport.choice = var.get()
+                var.set(GUI.postList[GUIReport.leftBox.curselection()[0]])
+                GUIReport.choice = GUI.postList[GUIReport.leftBox.curselection()[0]]
                 printReport()
 
             emptyLabel.pack()
@@ -1290,7 +1478,5 @@ def main():
                         for item in reportList:
                             print(item)
 
-GUI()
 
-
-        
+GUI()     
