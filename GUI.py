@@ -1,6 +1,7 @@
 ﻿
 def GUI():
     import tkinter as tk
+
     mainWindow = tk.Tk()
     mainWindow.title("Users And Posts Management System")
     mainWindow.geometry("600x400")
@@ -12,7 +13,7 @@ def GUI():
     crInfo.pack()
 
     def GetUserName():
-        user = open('user.txt')
+        user = open('user.txt',encoding = 'UTF-8')
         userInfoList = []
         for userInfo in user:
             userInfoList.append(userInfo.strip())
@@ -304,9 +305,143 @@ def GUI():
             dR.mainloop()
 
         def GUIGetA():
-            return 0
+            import tkinter.messagebox
+
+            GA = tk.Tk()
+            GA.title('Get Article')
+            GA.geometry("600x400")
+            titleLabel = tk.Label(GA,text = 'New Article', font = ('Arial',16)).pack()
+
+            middleFrame = tk.Frame(GA)
+            rightFrame = tk.Frame(GA)
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            middleLeft = tk.Frame(middleFrame)
+            middleRight = tk.Frame(middleFrame)
+            middleLeft.pack(side = 'left')
+            middleRight.pack(side = 'right')
+            middleBottom = tk.Frame(GA)
+            middleBottom.pack()
+
+            titleVar = tk.StringVar(GA)
+            authorVar = tk.StringVar(GA)
+            quoteVar = tk.StringVar(GA)
+            contentVar = tk.StringVar(GA)
+
+            emptyLebel3 = tk.Label(middleLeft,text='',font = ('Arial',6)).pack()
+            titleLabel = tk.Label(middleLeft,text = 'Post Title').pack()
+            GUIGetA.titleEntry = tk.Entry(middleRight,show = None,textvariable = titleVar).pack()
+            emptyLabel1 = tk.Label(middleLeft,text = '').pack()
+            emptyLabel2 = tk.Label(middleRight,text = '').pack()
+            authorLabel = tk.Label(middleLeft,text = 'Author').pack()
+            GUIGetA.authorEntry = tk.Entry(middleRight,show = None,textvariable = authorVar).pack()
+            quoteLabel = tk.Label(middleLeft, text = 'Quotation').pack()
+            GUIGetA.quoteEntry = tk.Entry(middleRight, show = None, textvariable = quoteVar).pack()
+            
+            contentLabel = tk.Label(middleLeft, text = 'Content').pack()
+            GUIGetA.contentText = tk.Text(middleBottom,height = 7)
+            GUIGetA.contentText.pack()
+
+            def GetData():
+                title = titleVar.get()
+                author = authorVar.get()
+                quote = quoteVar.get()
+                content = GUIGetA.contentText.get("1.0",'end-1c')
+                if title!='' and author!='' and content!='':
+                    if quote == '':
+                        quote = 'null'
+                    writeFile = open('post/'+title+'.txt','w',encoding = 'UTF-8')
+                    writeFile.write('%s\n%s\n%s\n%s\n' % (title,author,quote,content))
+                    writeFile.close()
+
+                    postFileList = os.listdir("post")
+                    GUI.postList = []
+                    for postFile in postFileList:
+                        readFile = open("post/"+postFile,encoding = 'UTF-8')
+                        fileTitle = readFile.readline()
+                        GUI.postList.append(fileTitle.strip())
+
+                    tkinter.messagebox.showinfo(title='Done',message='Article Saved')
+
+                else:
+                    tkinter.messagebox.showerror(title='Error',message='Article Not Finished')
+                
+            printButton = tk.Button(middleBottom,text = 'Add New Article',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
+
+            GA.mainloop()
+
         def GUIGetU():
-            return 0
+            import tkinter.messagebox
+
+            GU = tk.Tk()
+            GU.title('Get User')
+            GU.geometry("600x400")
+            titleLabel = tk.Label(GU,text = 'New User', font = ('Arial',16)).pack()
+
+            middleFrame = tk.Frame(GU)
+            rightFrame = tk.Frame(GU)
+            middleFrame.pack()
+            rightFrame.pack(side = 'right')
+            middleLeft = tk.Frame(middleFrame)
+            middleRight = tk.Frame(middleFrame)
+            middleLeft.pack(side = 'left')
+            middleRight.pack(side = 'right')
+            middleBottom = tk.Frame(GU)
+            middleBottom.pack()
+
+            nameVar = tk.StringVar(GU)
+            passVar = tk.StringVar(GU)
+            phoneVar = tk.StringVar(GU)
+            birthdayVar = tk.StringVar(GU)
+            friendVar = tk.StringVar(GU)
+            postVar = tk.StringVar(GU)
+
+            nameLabel = tk.Label(middleLeft,text = 'User Name').pack()
+            nameEntry = tk.Entry(middleRight,show = None,textvariable = nameVar).pack()
+            passLabel = tk.Label(middleLeft,text = 'Password').pack()
+            passEntry = tk.Entry(middleRight,show = None,textvariable = passVar).pack()
+            birthdayLabel = tk.Label(middleLeft, text = 'Birthday').pack()
+            birthdayEntry = tk.Entry(middleRight, show = None, textvariable = birthdayVar).pack()
+            phoneLabel = tk.Label(middleLeft, text = 'Phone').pack()
+            phoneEntry = tk.Entry(middleRight, show = None, textvariable = phoneVar).pack()
+            friendLabel = tk.Label(middleLeft, text = "Friend (Seperate with';')").pack()
+            friendEntry = tk.Entry(middleRight, show = None, textvariable = friendVar,width = 30).pack()
+            postLabel = tk.Label(middleLeft, text = "Post (Seperate with';')").pack()
+            postEntry = tk.Entry(middleRight, show = None, textvariable = postVar, width = 30).pack()
+
+            def GetData():
+                name = nameVar.get()
+                password = passVar.get()
+                birthday = birthdayVar.get()
+                phone = phoneVar.get()
+                friend = friendVar.get()
+                post = postVar.get()
+                if name!='' and password!='':
+                    writeFile = open('user.txt','a',encoding = 'UTF-8')
+                    writeFile.write('%s,%s,%s,%s,%s,%s\n' % (name,password,birthday,phone,friend,post))
+                    writeFile.close()
+                    tkinter.messagebox.showinfo(title='Done',message='User Saved')
+                    def GetUserName():
+                        user = open('user.txt',encoding = 'UTF-8')
+                        userInfoList = []
+                        for userInfo in user:
+                            userInfoList.append(userInfo.strip())
+                        nameList = []
+                        for userInfo in userInfoList:
+                            name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                            nameList.append(name)
+                        return nameList
+
+                    GUI.nameList = GetUserName()
+
+                else:
+                    tkinter.messagebox.showerror(title='Error',message='User Information Not Finished')
+                
+            printButton = tk.Button(middleBottom,text = 'Add New User',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
+
+
+            GU.mainloop()
+
         def GUIIsDirectSource():
             isDirectSource = tk.Tk()
             isDirectSource.title('Is Direct Source?')
@@ -603,6 +738,7 @@ def GUI():
             printButton = tk.Button(middleBottom,text = 'Print Post',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
 
             NPA.mainloop()
+
         def GUIReport():
             R = tk.Tk()
             R.title('Report')
@@ -701,7 +837,7 @@ def DirectReport(anchor):
         readFile.close()
     return reportList
 
-"""This function calcuate two users' friendship index
+"""This function calcuates two users' friendship index
 It receives two user name and return their friendship index
 For the algorithm, please refer to the report
 
@@ -1139,7 +1275,7 @@ def NicePrintU(userName):
     user.close()
     return False
 
-"""This function calcate the impact index of a post
+"""This function calcates the impact index of a post
 It receives a post name and return a impact index float
 For the algorithm please watch the report
 
@@ -1215,7 +1351,7 @@ def PostImpactIndex(anchor):
         impactIndex += (0.5)**(PostImpactIndex.countDict[dictKey]-1)
     return "{:.3f}".format(impactIndex)
 
-"""This function calcuate two users' quotation index
+"""This function calcuates two users' quotation index
 It receives two user name and return their quotation index
 For the algorithm, please refer to the report
 
