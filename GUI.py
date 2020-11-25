@@ -19,7 +19,7 @@ def GUI():
             userInfoList.append(userInfo.strip())
         nameList = []
         for userInfo in userInfoList:
-            name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+            name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
             nameList.append(name)
         return nameList
 
@@ -390,6 +390,8 @@ def GUI():
             middleBottom.pack()
 
             nameVar = tk.StringVar(GU)
+            firstnameVar = tk.StringVar(GU)
+            lastnameVar = tk.StringVar(GU)
             passVar = tk.StringVar(GU)
             phoneVar = tk.StringVar(GU)
             birthdayVar = tk.StringVar(GU)
@@ -398,6 +400,10 @@ def GUI():
 
             nameLabel = tk.Label(middleLeft,text = 'User Name').pack()
             nameEntry = tk.Entry(middleRight,show = None,textvariable = nameVar).pack()
+            firstnameLabel = tk.Label(middleLeft, text = 'Real First Name').pack()
+            firstnameEntry = tk.Entry(middleRight,show = None, textvariable = firstnameVar).pack()
+            lastnameLabel = tk.Label(middleLeft, text = 'Real Last Name').pack()
+            lastnameEntry = tk.Entry(middleRight,show = None, textvariable = lastnameVar).pack()
             passLabel = tk.Label(middleLeft,text = 'Password').pack()
             passEntry = tk.Entry(middleRight,show = None,textvariable = passVar).pack()
             birthdayLabel = tk.Label(middleLeft, text = 'Birthday').pack()
@@ -411,6 +417,8 @@ def GUI():
 
             def GetData():
                 name = nameVar.get()
+                firstname = firstnameVar.get()
+                lastname = lastnameVar.get()
                 password = passVar.get()
                 birthday = birthdayVar.get()
                 phone = phoneVar.get()
@@ -418,7 +426,7 @@ def GUI():
                 post = postVar.get()
                 if name!='' and password!='':
                     writeFile = open('user.txt','a',encoding = 'UTF-8')
-                    writeFile.write('%s,%s,%s,%s,%s,%s\n' % (name,password,birthday,phone,friend,post))
+                    writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (name,firstname,lastname,password,birthday,phone,friend,post))
                     writeFile.close()
                     tkinter.messagebox.showinfo(title='Done',message='User Saved')
                     def GetUserName():
@@ -428,7 +436,7 @@ def GUI():
                             userInfoList.append(userInfo.strip())
                         nameList = []
                         for userInfo in userInfoList:
-                            name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                            name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
                             nameList.append(name)
                         return nameList
 
@@ -566,14 +574,18 @@ def GUI():
                 for userInfo in user:
                     userInfoList.append(userInfo.strip())
                 nameList = []
+                firstnameList = []
+                lastnameList = []
                 passwordList = []
                 birthdayList = []
                 phoneNumberList = []
                 friendList = []
                 postList = []
                 for userInfo in userInfoList:
-                    name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                    name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
                     nameList.append(name)
+                    firstnameList.append(firstname)
+                    lastnameList.append(lastname)
                     passwordList.append(password)
                     birthdayList.append(birthday)
                     phoneNumberList.append(phoneNumber)
@@ -581,6 +593,8 @@ def GUI():
                     postList.append(post)
                 index = -1
                 name = ''
+                firstname = ''
+                lastname = ''
                 password = ''
                 birthday = ''
                 phoneNumber = ''
@@ -590,6 +604,8 @@ def GUI():
                     index += 1
                     if alluser == userName:
                         name = nameList[index]
+                        firstname = firstnameList[index]
+                        lastname = lastnameList[index]
                         password = passwordList[index]
                         birthday = birthdayList[index]
                         phoneNumber = phoneNumberList[index]
@@ -597,7 +613,7 @@ def GUI():
                         postTitleList = postList[index].split(';')
                         
                 user.close()
-                return [name,password,birthday,phoneNumber,friendNameList,postTitleList]
+                return [name,firstname,lastname,password,birthday,phoneNumber,friendNameList,postTitleList]
 
             NPU = tk.Tk()
             NPU.title('Nice Print User')
@@ -624,14 +640,18 @@ def GUI():
             GUINicePrintU.leftBox.pack()
 
             nameVar = tk.StringVar(NPU)
+            firstnameVar = tk.StringVar(NPU)
+            lastnameVar = tk.StringVar(NPU)
             passVar = tk.StringVar(NPU)
             phoneVar = tk.StringVar(NPU)
             birthdayVar = tk.StringVar(NPU)
 
             nameLabel = tk.Label(middleLeft,text = 'User Name').pack()
             nameEntry = tk.Entry(middleRight,show = None,textvariable = nameVar).pack()
-            emptyLabel1 = tk.Label(middleLeft,text = '').pack()
-            emptyLabel2 = tk.Label(middleRight,text = '').pack()
+            firstnameLabel = tk.Label(middleLeft,text = 'Real First Name').pack()
+            firstnameEntry = tk.Entry(middleRight,show = None,textvariable = firstnameVar).pack()
+            lastnameLabel = tk.Label(middleLeft, text = 'Real Last Name').pack()
+            lastnameEntry = tk.Entry(middleRight,show = None,textvariable = lastnameVar).pack()
             passLabel = tk.Label(middleLeft,text = 'Password').pack()
             passEntry = tk.Entry(middleRight,show = None,textvariable = passVar).pack()
             birthdayLabel = tk.Label(middleLeft, text = 'Birthday').pack()
@@ -649,14 +669,16 @@ def GUI():
                 nameVar.set(GUI.nameList[GUINicePrintU.leftBox.curselection()[0]])
                 userName = GUI.nameList[GUINicePrintU.leftBox.curselection()[0]]
                 userData = EditNicePrintU(userName)
-                passVar.set(userData[1])
-                phoneVar.set(userData[3])
-                birthdayVar.set(userData[2])
+                passVar.set(userData[3])
+                firstnameVar.set(userData[1])
+                lastnameVar.set(userData[2])
+                phoneVar.set(userData[5])
+                birthdayVar.set(userData[4])
                 GUINicePrintU.friendBox.delete(0,'end')
-                for item in userData[4]:
+                for item in userData[6]:
                     GUINicePrintU.friendBox.insert('end',item)
                 GUINicePrintU.postBox.delete(0,'end')
-                for post in userData[5]:
+                for post in userData[7]:
                     GUINicePrintU.postBox.insert('end',post)
 
             printButton = tk.Button(middleBottom,text = 'Print User',command = GetData,font = ("Arial",16), width = 20, height = 2, bg = 'light grey').pack()
@@ -853,7 +875,7 @@ def FriendshipIndex(user1,user2):
         nameList = []
         postList = []
         for userInfo in userInfoList:
-            name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+            name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
             nameList.append(name)
             postList.append(post)
         try:
@@ -879,10 +901,13 @@ def FriendshipIndex(user1,user2):
             quoteList.append(quotation)
         return quoteList
 
+    #Get their posts data
     user1Quote = UserQuoteList(UserInfo(user1))
     user2Quote = UserQuoteList(UserInfo(user2))
     if len(user1Quote) == 0 or len(user2Quote) == 0:
         return 0
+
+    #Calculate the friendship
     user1Friendship = 0
     user2Friendship = 0
     for resource in user1Quote:
@@ -893,6 +918,8 @@ def FriendshipIndex(user1,user2):
         for post in UserInfo(user1):
             if resource == post:
                 user2Friendship += 1
+
+    #Choose the smaller one 
     if user1Friendship < user2Friendship:
         eachOtherQuote = user1Friendship
     else:
@@ -911,9 +938,12 @@ def GetA():
     #No receiving and return True when write successfully and False in other situation
     def GetFromKeyboard():
         title = str(input("\nPlease enter the title: "))
+
+        #Verify whether the title has already exist
         try:
             existFile = open('post/'+title+'.txt','r',encoding= 'UTF-8')
         except IOError:
+            #Add other information
             author = str(input("Please enter the author: "))
             quote = str(input("Please enter the quotation. Or enter 'null' if no quotation: "))       
             print("Please enter the content, end with EOF(just type Ctrl+D or Ctrl+Z or Ctrl+C)\n")
@@ -925,6 +955,8 @@ def GetA():
                     break
             print("Check your title, author and quote:\n")
             print("Title:%s\nAuthor:%s\nQuote:%s\n " %(title,author,quote))
+            
+            #Let admin have a check
             commandChar = str(input("Please check the format carefully and enter [Y/y] to confirm, others to cancel: "))
             if commandChar == 'Y' or commandChar == 'y':
                 try:
@@ -947,6 +979,7 @@ def GetA():
     #This function is used to add post from file
     #No receiving and return True when successfully write and return False in other situation
     def GetFromFile():
+        #Get Data
         filePath = str(input("Please input the full path and name of the file: "))
         try:
             open(filePath)
@@ -964,6 +997,8 @@ def GetA():
             content = []
             for line in fileData:
                 content.append(line)
+            
+            #Let admin have a check    
             print("File found\n Check the information:\nTitle:%s\nAuthor:%s\nQuote:%s\n" % (title,author,quote))
             commandChar = str(input("Enter [C/c] to print the content, others to cancel printing: "))
             if commandChar == 'C' or commandChar == 'c':
@@ -1007,17 +1042,23 @@ def GetU():
     #No receiving and return True when write successfully and False in other situation
     def GetFromKeyboard():
         userName = str(input("\nPlease enter the user name: "))
+        firstname = str(input("Please enter the real first name: "))
+        lastname = str(input("Please enter the real last name: "))
         password = str(input("Please enter the password: "))
         birthday = str(input("Please enter the birthday or enter ' ' if no birthday: "))
         phoneNumber = str(input("Please enter the phone number or enter ' ' if no phone number: "))
         friend = str(input("Please enter friends, separate with ';' and also end with ';': "))
         post = str(input("Please enter posts, no space, separate with ';' and also end with ';': "))
+
+        #Print the input to let user have a check
         print("\nCheck your input:\n")
-        print("username:%s\npassword:%s\nbirthday:%s\nphone number:%s\nfriend:%s\nposts:%s\n" %(userName,password,birthday,phoneNumber,friend,post))
+        print("username:%s\nfirst name:%s\nlast name:%s\npassword:%s\nbirthday:%s\nphone number:%s\nfriend:%s\nposts:%s\n" %(userName,firstname,lastname,password,birthday,phoneNumber,friend,post))
         commandChar = str(input("Please check the format carefully and enter [Y/y] to confirm, others to cancel: "))
+        
+        #Let user confirm
         if commandChar == 'Y' or commandChar == 'y':
             writeFile = open('user.txt','a')
-            writeFile.write('%s,%s,%s,%s,%s,%s\n' % (userName,password,birthday,phoneNumber,friend,post))
+            writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (userName,firstname,lastname,password,birthday,phoneNumber,friend,post))
             writeFile.close()
             print("\nWrite Successfully")
             return True
@@ -1028,6 +1069,7 @@ def GetU():
     #This function is used to add user from file
     #No receiving and return True when successfully write and return False in other situation
     def GetFromFile():
+        #Get Data
         filePath = str(input("Please input the full path and name of the file: "))
         try:
             open(filePath)
@@ -1040,28 +1082,36 @@ def GetU():
             for userInfo in fileData:
                 userInfoList.append(userInfo.strip())
             nameList = []
+            firstnameList = []
+            lastnameList = []
             passwordList = []
             birthdayList = []
             phoneNumberList = []
             friendList = []
             postList = []
             for userInfo in userInfoList:
-                 name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                 name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
                  nameList.append(name)
+                 firstnameList.append(firstname)
+                 lastnameList.append(lastname)
                  passwordList.append(password)
                  birthdayList.append(birthday)
                  phoneNumberList.append(phoneNumber)
                  friendList.append(friend)
                  postList.append(post)
+            
+            #Let admin have a check
             print("\nFile read\nThe following are users: ")
             for i in nameList:
                 print(i)
             commandChar = str(input("Please check it carefully and enter [Y/y] to confirm, others to cancel: "))
+            
+            #Le admin confirm
             if commandChar == 'Y' or commandChar == 'y':
                 writeFile = open('user.txt','a')
                 for userInfo in userInfoList:
-                    name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
-                    writeFile.write('%s,%s,%s,%s,%s,%s\n' % (name,password,birthday,phoneNumber,friend,post))
+                    name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+                    writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (name,firstname,lastname,password,birthday,phoneNumber,friend,post))
                 writeFile.close()
                 print("\nWrite Successfully\n")
                 return True
@@ -1069,7 +1119,7 @@ def GetU():
                 print("\nCanceled\n")
                 return False
 
-
+    #Main loop
     print("\nWelcome to the add user mode\n")
     while True:
         commandChar = str(input("Type [N/n] to get new account by keyboard, type [F/f] to get new by file, type [E/e] to exit: "))
@@ -1112,6 +1162,7 @@ Edit log:
 Oct 27, 2020 created
 """
 def IsFriend(userName1,userName2):
+    #Get Data
     user = open('user.txt')
     userInfoList = []
     for userInfo in user:
@@ -1123,13 +1174,11 @@ def IsFriend(userName1,userName2):
     friendList = []
     postList = []
     for userInfo in userInfoList:
-        name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+        name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
         nameList.append(name)
-        passwordList.append(password)
-        birthdayList.append(birthday)
-        phoneNumberList.append(phoneNumber)
         friendList.append(friend)
-        postList.append(post)
+
+    #Check whether the given users exist
     try:
         index1 = nameList.index(userName1)
         index2 = nameList.index(userName2)
@@ -1140,6 +1189,8 @@ def IsFriend(userName1,userName2):
     if friendList[index1] == ' ' or friendList[index2] == ' ':
         user.close()
         return False
+    
+    #Check whether users in each other's friend list
     friendNameList1 = friendList[index1].split(';')
     friendNameList2 = friendList[index2].split(';')
     for friendName1 in friendNameList1:
@@ -1185,6 +1236,8 @@ def IsSource(sourcePost, reportPost):
     report = reportPost
     if sourcePost == DirectSource(reportPost):
         return True
+
+    #Find all related posts
     while (report != 'null'):
         if report == source:
             return True
@@ -1200,6 +1253,7 @@ Written by Yunfei LIU
 Edit log:
 Oct 27, 2020 created"""
 def NicePrintA(postName):
+    #Get Data
     try:
         post = open('post/'+str(postName)+'.txt',encoding = 'UTF-8')
     except IOError:
@@ -1214,6 +1268,8 @@ def NicePrintA(postName):
     content = []
     for contentLine in post:
         content.append(contentLine)
+
+    #Print Data
     print("\nFile found\n")
     print("Title: "+title[1:])
     print("Author: "+author)
@@ -1232,30 +1288,39 @@ Written by Yunfei LIU
 Edit log:
 Oct 24, 2020 created"""
 def NicePrintU(userName):
+    #Get Data
     user = open('user.txt')
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
     nameList = []
+    firstnameList = []
+    lastnameList = []
     passwordList = []
     birthdayList = []
     phoneNumberList = []
     friendList = []
     postList = []
     for userInfo in userInfoList:
-        name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+        name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
         nameList.append(name)
+        firstnameList.append(firstname)
+        lastnameList.append(lastname)
         passwordList.append(password)
         birthdayList.append(birthday)
         phoneNumberList.append(phoneNumber)
         friendList.append(friend)
         postList.append(post)
+
+    #Print Data
     index = -1
     for alluser in nameList:
         index += 1
         if alluser == userName:
             print("\nUser Found\n")
             print("Username:",nameList[index])
+            print("First name:",firstnameList[index])
+            print("Last name:",lastnameList[index])
             print("Password:",passwordList[index])
             print("Birthday:",birthdayList[index])
             print("Phone number:",phoneNumberList[index])
@@ -1285,6 +1350,7 @@ def PostImpactIndex(anchor):
     #This function is as same as DirectReport(anchor)
     countDict = dict()
     PostImpactIndex.countDict = {}
+    #Get Direct Report
     def DirectReport(anchor):
         import os
         postFileList = os.listdir("post")
@@ -1327,12 +1393,14 @@ def PostImpactIndex(anchor):
         else:
             return False
 
+    #Check whether the given have report
     if DirectReport(anchor) == []:
         return 0
     reportList = DirectReport(anchor)
     anchorList = DirectReport(anchor)
     tempList = anchorList
     count = 2
+    #Check how many posts between report and source
     for dictKey in PostImpactIndex.countDict:
         PostImpactIndex.countDict[dictKey] += 1
     for anchorItem in anchorList:
@@ -1345,6 +1413,8 @@ def PostImpactIndex(anchor):
             for dictKey in PostImpactIndex.countDict:
                 PostImpactIndex.countDict[dictKey] += 1
     anchorList = tempList
+
+    #Calculate impact index
     impactIndex = 0
     for dictKey in PostImpactIndex.countDict:
         PostImpactIndex.countDict[dictKey] = count+1-PostImpactIndex.countDict[dictKey]
@@ -1367,7 +1437,7 @@ def QuotationIndex(user1,user2):
         nameList = []
         postList = []
         for userInfo in userInfoList:
-            name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+            name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
             nameList.append(name)
             postList.append(post)
         try:
@@ -1397,6 +1467,8 @@ def QuotationIndex(user1,user2):
     user2Quote = UserQuoteList(UserInfo(user2))
     if len(user1Quote) == 0 or len(user2Quote) == 0:
         return 0
+    
+    #Calculate users' quotation in each other
     user1Quotation = 0
     user2Quotation = 0
     for resource in user1Quote:
@@ -1407,6 +1479,8 @@ def QuotationIndex(user1,user2):
         for post in UserInfo(user1):
             if resource == post:
                 user2Quotation += 1
+
+    #Calculate quotation index
     quotationIndex = (((user1Quotation/len(user1Quote))**2)+((user2Quotation/len(user2Quote))**2))**0.5
     return "{:.3f}".format(quotationIndex)
 
@@ -1451,11 +1525,12 @@ def Report(anchor):
             return True
         else:
             return False
-
+    #Check whether given post has report
     if DirectReport(anchor) == []:
         return []
     reportList = DirectReport(anchor)
     anchorList = DirectReport(anchor)
+    #Check whether given post has indirect report
     if anchorList == []:
         return []
     tempList = anchorList
@@ -1473,6 +1548,7 @@ For the algorithm, please refer to the report
 
 Written by Yunfei LIU Nov 11, 2020"""
 def UserImpactIndex(userName):
+    #Get Data
     user = open('user.txt')
     userInfoList = []
     for userInfo in user:
@@ -1480,14 +1556,19 @@ def UserImpactIndex(userName):
     nameList = []
     postList = []
     for userInfo in userInfoList:
-        name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+        name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
         nameList.append(name)
         postList.append(post)
+    
+    #Check whether the user exists   
     try:
         userIndex = nameList.index(userName)
     except ValueError:
         return 0
+    #Get the user's posts
     userPostList = postList[userIndex].split(';')
+
+    #Calculate all the posts impact index and user's impact index
     impactSum = 0
     for title in userPostList:
         impactSum += float(PostImpactIndex(title))
@@ -1510,19 +1591,24 @@ def KOL(miniIndex,percentage):
         userInfoList.append(userInfo.strip())
     nameList = []
     for userInfo in userInfoList:
-        name,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
+        name,firstname,lastname,password,birthday,phoneNumber,friend,post = map(str,userInfo.split(','))
         nameList.append(name)
+
+    #Calculate impact index
     impactList = []
     for i in nameList:
         impactList.append([i,UserImpactIndex(i)])
     kolNumber = int((len(nameList)*percentage/100)//1)
 
+    #Sort the list by impact index
     def Verify(list):
         return list[1]
 
     impactList.sort(key=Verify)
     impactList.reverse()
     kolList = []
+
+    #Check the users whether meets minimum index
     for i in range(kolNumber):
         if float(impactList[i][1]) >= float(miniIndex):
             kolList.append(impactList[i])
@@ -1615,4 +1701,4 @@ def main():
                             print(item)
 
 
-GUI()     
+main()     
