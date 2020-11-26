@@ -1710,7 +1710,7 @@ Written by Yunfei LIU  Nov 23, 2020"""
 def main():
     print("Copyright 2020 Mu Yuan LI, Owen CHAN, Yun Fei LIU\nAll rights reserved.\n\n")
     while True:
-        modeChar = str(input("Enter 'C' for command line mode, 'G' for GUI (Not developed yet), 'E' for exit: "))
+        modeChar = str(input("Enter 'C' for command line mode, 'G' for GUI, 'E' for exit: "))
         if modeChar == 'E':
             return 0
         if modeChar == 'G':
