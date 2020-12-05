@@ -3,9 +3,9 @@
 
 ## The format of input files
 As for user file, a UTF-8 format document is required, one line for one user, use `,` to divide the components and `;` to divide objects in component
-String format:`username,password,birthday,phone number,friend,post` 
+String format:`username,first name,last name,password,birthday,phone number,friend,post` 
 
-*e.g. CHANTaiman,123456,01/01/2020,88888888,Jack;Bob;Tom;Bobby;,I have a dream;Gettysburg address;*
+*e.g. Bob,Taiman,Chan,123456,01/01/2020,88888888,Jack;Bob;Tom;Bobby;,I have a dream;Gettysburg address;*
 
 As for post file, a UTF-8 format document is required, one document for one post. The first line is title, the second line is author, the third line is quotation, the remain lines are contents
 Document format:
