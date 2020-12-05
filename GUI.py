@@ -271,7 +271,51 @@
         frame_r.pack(side='right')
 
         def GUIAnchor():
-            return 0
+            anchor = tk.Tk()
+            anchor.title('Anchor')
+            anchor.geometry("600x400")
+            titleLabel = tk.Label(anchor, text='Anchor', font=('Arial', 16)).pack()
+            emptyLabel = tk.Label(anchor, text=' ', font=('Arial', 16), height=5)
+            hintLabel = tk.Label(anchor, text='Enter Report Title', font=('Arial', 12))
+
+            leftFrame = tk.Frame(anchor)
+            middleFrame = tk.Frame(anchor)
+            rightFrame = tk.Frame(anchor)
+            leftFrame.pack(side='left')
+            middleFrame.pack()
+            rightFrame.pack(side='right')
+
+            leftLabel = tk.Label(leftFrame, text='Post', font=('Arial', 12)).pack()
+            GUIAnchor.leftBox = tk.Listbox(leftFrame, height=15)
+            for item in GUI.postList:
+                GUIAnchor.leftBox.insert('end', item)
+            GUIAnchor.leftBox.pack()
+
+            var = tk.StringVar(anchor)
+            GUIAnchor.choice = ''
+
+            def getAnchor():
+                var.set(GUI.postList[GUIAnchor.leftBox.curselection()[0]])
+                GUIAnchor.choice = GUI.postList[GUIAnchor.leftBox.curselection()[0]]
+                printReport()
+
+            emptyLabel.pack()
+            hintLabel.pack()
+            reportEntry = tk.Entry(anchor, show=None, textvariable=var).pack()
+            reportButton = tk.Button(anchor, text="Find Anchor", command=getAnchor, font=('Arial', 16), height=2,
+                                     width=20, bg='light grey').pack(side='bottom')
+
+            rightLabel = tk.Label(rightFrame, text='Anchor', font=('Arial', 12)).pack()
+            GUIAnchor.rightBox = tk.Listbox(rightFrame, height=15)
+
+            def printReport():
+                reportList = [Anchor(GUIAnchor.choice)]
+                GUIAnchor.rightBox.delete(0, 'end')
+                for item in reportList:
+                    GUIAnchor.rightBox.insert('end', item)
+
+            GUIAnchor.rightBox.pack()
+            anchor.mainloop()
 
         def GUIDirectReport():
             dR = tk.Tk()
@@ -866,6 +910,37 @@
     basButton.pack(side='bottom')
 
     mainWindow.mainloop()
+
+""" This function is used to find the anchor of a post
+A file of  post data will be read into the function, it returns the article K,
+if it is the anchor of article A, i.e. K is an anchor and A directly/indirectly quote K 
+
+Written by Owen CHAN  15 Nov, 2020 
+Edited by Yunfei LIU Dec 5, 2020"""
+
+def Anchor(reportPost):
+    #This function is used to find source
+    def GetSource(report):
+        try:
+            postData = open( 'post/' +  report + '.txt' , encoding = 'UTF-8')
+        except IOError :   
+            print('Fail to open the file\n')
+            return 'Fail'
+        line1 = postData.readline()   
+        line2 = postData.readline()
+        line3 = postData.readline()
+        quote = line3.strip()
+        postData.close()
+        return  quote
+
+    report = reportPost
+    while True:
+        source = GetSource(report)
+        if source == 'null':
+            return report
+        if source == 'Fail':
+            return ''
+        report = source
 
 
 """This function is used to return the direct report
@@ -1754,7 +1829,8 @@ def main():
                         ".NicePrintA\n9.NicePrintU\n10.Report\n")
                     choiceChar = str(input("Please enter numbers to use functions, other to return: "))
                     if choiceChar == '1':
-                        continue
+                        post = str(input("Please enter the post title: "))
+                        print("The anchor of post '%s' is '%s'\n" %(post,Anchor(post)))
                     elif choiceChar == '2':
                         post = str(input("\nEnter the post title: "))
                         reportList = DirectReport(post)
