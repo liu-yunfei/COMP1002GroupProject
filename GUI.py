@@ -1,25 +1,25 @@
-﻿def GUI():
+def GUI():
     import tkinter as tk
 
     mainWindow = tk.Tk()
     mainWindow.title("Users And Posts Management System")
     mainWindow.geometry("600x400")
 
-    welInfo = tk.Label(mainWindow, text="Welcome to use this system", font=('Arial', 24))
+    welInfo = tk.Label(mainWindow, text="Welcome to use this system", font=("Arial", 24))
     welInfo.pack()
 
     crInfo = tk.Label(mainWindow, text="Copyright 2020 Muyuan LI, Owen Chan, Yunfei LIU.\nAll rights reserved.",
-                      font=('Arial', 10))
+                      font=("Arial", 10))
     crInfo.pack()
 
     def GetUserName():
-        user = open('user.txt', encoding='UTF-8')
+        user = open("user.txt", encoding="UTF-8")
         userInfoList = []
         for userInfo in user:
             userInfoList.append(userInfo.strip())
         nameList = []
         for userInfo in userInfoList:
-            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
             nameList.append(name)
         return nameList
 
@@ -30,42 +30,44 @@
     GUI.postList = []
     for postFile in postFileList:
         try:
-            readFile = open("post/" + postFile, encoding='UTF-8')
+            readFile = open("post/" + postFile, encoding="UTF-8")
         except IOError:
             print("Cannot open the file")
             return []
         fileTitle = readFile.readline()
-        GUI.postList.append(fileTitle.strip())
-
+        if ord(fileTitle[0]) == 65279:
+            GUI.postList.append(fileTitle.strip()[1:])
+        else:
+            GUI.postList.append(fileTitle.strip())
     def AdvancedScreen():
         advWindow = tk.Tk()
         advWindow.title("Advanced Functions")
         advWindow.geometry("600x400")
 
-        advLabel = tk.Label(advWindow, text='Advanced Functions', font=('Arial', 16)).pack()
+        advLabel = tk.Label(advWindow, text="Advanced Functions", font=("Arial", 16)).pack()
 
         frame = tk.Frame(advWindow)
         frame.pack()
         frame_l = tk.Frame(frame)
-        frame_l.pack(side='left')
+        frame_l.pack(side="left")
         frame_r = tk.Frame(frame)
-        frame_r.pack(side='right')
+        frame_r.pack(side="right")
 
         def GUIUserImpactIndex():
             uIndex = tk.Tk()
-            uIndex.title('User Impact Index')
+            uIndex.title("User Impact Index")
             uIndex.geometry("600x400")
-            titleLabel = tk.Label(uIndex, text='User Impact Index', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(uIndex, text="User Impact Index", font=("Arial", 16)).pack()
 
             frame = tk.Frame(uIndex)
             frame.pack()
             frame_l = tk.Frame(frame)
-            frame_l.pack(side='left')
+            frame_l.pack(side="left")
             frame_r = tk.Frame(frame)
-            frame_r.pack(side='right')
+            frame_r.pack(side="right")
 
-            leftLabel = tk.Label(frame_l, text='Names', width=15).pack()
-            rightLabel = tk.Label(frame_r, text='Impact Index', width=15).pack()
+            leftLabel = tk.Label(frame_l, text="Names", width=15).pack()
+            rightLabel = tk.Label(frame_r, text="Impact Index", width=15).pack()
 
             nameBox = tk.Listbox(uIndex, width=30, height=15)
             impactList = []
@@ -73,7 +75,7 @@
                 impactList.append(UserImpactIndex(item))
             count = 0
             for i in GUI.nameList:
-                nameBox.insert('end', i + '          ' + str(impactList[count]))
+                nameBox.insert("end", i + "          " + str(impactList[count]))
                 count += 1
 
             nameBox.pack()
@@ -81,19 +83,19 @@
 
         def GUIPostImpactIndex():
             pIndex = tk.Tk()
-            pIndex.title('Post Impact Index')
+            pIndex.title("Post Impact Index")
             pIndex.geometry("600x400")
-            titleLabel = tk.Label(pIndex, text='Post Impact Index', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(pIndex, text="Post Impact Index", font=("Arial", 16)).pack()
 
             frame = tk.Frame(pIndex)
             frame.pack()
             frame_l = tk.Frame(frame)
-            frame_l.pack(side='left')
+            frame_l.pack(side="left")
             frame_r = tk.Frame(frame)
-            frame_r.pack(side='right')
+            frame_r.pack(side="right")
 
-            leftLabel = tk.Label(frame_l, text='Titles', width=15).pack()
-            rightLabel = tk.Label(frame_r, text='Impact Index', width=15).pack()
+            leftLabel = tk.Label(frame_l, text="Titles", width=15).pack()
+            rightLabel = tk.Label(frame_r, text="Impact Index", width=15).pack()
 
             impactList = []
             for item in GUI.postList:
@@ -102,7 +104,7 @@
             postBox = tk.Listbox(pIndex, width=30, height=15)
             count = 0
             for i in GUI.postList:
-                postBox.insert('end', i + '          ' + str(impactList[count]))
+                postBox.insert("end", i + "          " + str(impactList[count]))
                 count += 1
 
             postBox.pack()
@@ -110,101 +112,101 @@
 
         def GUIFriendshipIndex():
             fIndex = tk.Tk()
-            fIndex.title('Friendship Index')
+            fIndex.title("Friendship Index")
             fIndex.geometry("600x400")
-            titleLabel = tk.Label(fIndex, text='Friendship Index', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(fIndex, text="Friendship Index", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(fIndex)
             middleFrame = tk.Frame(fIndex)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Users', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Users", font=("Arial", 12)).pack()
             GUIFriendshipIndex.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.nameList:
-                GUIFriendshipIndex.leftBox.insert('end', item)
+                GUIFriendshipIndex.leftBox.insert("end", item)
             GUIFriendshipIndex.leftBox.pack()
 
             var1 = tk.StringVar(fIndex)
             var2 = tk.StringVar(fIndex)
             indexVar = tk.StringVar(fIndex)
-            emptyLabel = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            user1Label = tk.Label(middleFrame, text="User 1", font=('Arial', 12)).pack()
+            emptyLabel = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            user1Label = tk.Label(middleFrame, text="User 1", font=("Arial", 12)).pack()
             user1Entry = tk.Entry(middleFrame, show=None, textvariable=var1).pack()
-            user2Label = tk.Label(middleFrame, text="User 2", font=('Arial', 12)).pack()
+            user2Label = tk.Label(middleFrame, text="User 2", font=("Arial", 12)).pack()
             user2Entry = tk.Entry(middleFrame, show=None, textvariable=var2).pack()
 
             def GetVar():
                 indexNumber = FriendshipIndex(var1.get(), var2.get())
                 indexVar.set(indexNumber)
 
-            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=('Arial', 16),
-                                    bg='light grey').pack()
-            emptyLabel2 = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
+            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=("Arial", 16),
+                                    bg="light grey").pack()
+            emptyLabel2 = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
             hintLabel = tk.Label(middleFrame, text="The friendship index of user 1 and user 2 is",
-                                 font=('Arial', 12)).pack()
+                                 font=("Arial", 12)).pack()
             numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
             fIndex.mainloop()
 
         def GUIQuotationIndex():
             qIndex = tk.Tk()
-            qIndex.title('Quotation Index')
+            qIndex.title("Quotation Index")
             qIndex.geometry("600x400")
-            titleLabel = tk.Label(qIndex, text='Quotation Index', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(qIndex, text="Quotation Index", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(qIndex)
             middleFrame = tk.Frame(qIndex)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Users', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Users", font=("Arial", 12)).pack()
             GUIFriendshipIndex.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.nameList:
-                GUIFriendshipIndex.leftBox.insert('end', item)
+                GUIFriendshipIndex.leftBox.insert("end", item)
             GUIFriendshipIndex.leftBox.pack()
 
             var1 = tk.StringVar(qIndex)
             var2 = tk.StringVar(qIndex)
             indexVar = tk.StringVar(qIndex)
-            emptyLabel = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            user1Label = tk.Label(middleFrame, text="User 1", font=('Arial', 12)).pack()
+            emptyLabel = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            user1Label = tk.Label(middleFrame, text="User 1", font=("Arial", 12)).pack()
             user1Entry = tk.Entry(middleFrame, show=None, textvariable=var1).pack()
-            user2Label = tk.Label(middleFrame, text="User 2", font=('Arial', 12)).pack()
+            user2Label = tk.Label(middleFrame, text="User 2", font=("Arial", 12)).pack()
             user2Entry = tk.Entry(middleFrame, show=None, textvariable=var2).pack()
 
             def GetVar():
                 indexNumber = QuotationIndex(var1.get(), var2.get())
                 indexVar.set(indexNumber)
 
-            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=('Arial', 16),
-                                    bg='light grey').pack()
-            emptyLabel2 = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
+            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=("Arial", 16),
+                                    bg="light grey").pack()
+            emptyLabel2 = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
             hintLabel = tk.Label(middleFrame, text="The quotation index of user 1 and user 2 is",
-                                 font=('Arial', 12)).pack()
+                                 font=("Arial", 12)).pack()
             numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
             qIndex.mainloop()
 
         def GUIFindKOL():
             kol = tk.Tk()
-            kol.title('Find KOL')
+            kol.title("Find KOL")
             kol.geometry("600x400")
-            titleLabel = tk.Label(kol, text='Find KOL', font=('Arial', 16)).pack()
-            emptyLabel1 = tk.Label(kol, text=' ', font=('Arial', 16), height=2).pack()
+            titleLabel = tk.Label(kol, text="Find KOL", font=("Arial", 16)).pack()
+            emptyLabel1 = tk.Label(kol, text=" ", font=("Arial", 16), height=2).pack()
 
             leftFrame = tk.Frame(kol)
             middleFrame = tk.Frame(kol)
             rightFrame = tk.Frame(kol)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
 
-            leftLabel = tk.Label(leftFrame, text='Users', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Users", font=("Arial", 12)).pack()
             GUIFindKOL.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.nameList:
-                GUIFindKOL.leftBox.insert('end', item)
+                GUIFindKOL.leftBox.insert("end", item)
             GUIFindKOL.leftBox.pack()
 
-            rightLabel = tk.Label(rightFrame, text='KOL', font=('Arial', 12)).pack()
+            rightLabel = tk.Label(rightFrame, text="KOL", font=("Arial", 12)).pack()
             GUIFindKOL.rightBox = tk.Listbox(rightFrame, height=15)
             GUIFindKOL.rightBox.pack()
 
@@ -215,7 +217,7 @@
                 number.config(text="Your selection:" + num)
                 GUIFindKOL.percentNumber = num
 
-            percentage = tk.Scale(kol, label='Percentage of KOL', from_=0, to=100, orient=tk.HORIZONTAL, length=200,
+            percentage = tk.Scale(kol, label="Percentage of KOL", from_=0, to=100, orient=tk.HORIZONTAL, length=200,
                                   showvalue=0, tickinterval=20, resolution=0.1, command=selection).pack()
             number.pack()
 
@@ -228,31 +230,31 @@
                 impact.config(text="Your selection:" + num)
                 GUIFindKOL.impactNumber = num
 
-            miniImpact = tk.Scale(kol, label='Minimum impact index', from_=0, to=10, orient=tk.HORIZONTAL, length=200,
+            miniImpact = tk.Scale(kol, label="Minimum impact index", from_=0, to=10, orient=tk.HORIZONTAL, length=200,
                                   showvalue=0, tickinterval=2, resolution=0.01, command=selection).pack()
             impact.pack()
 
             def addKOL():
-                GUIFindKOL.rightBox.delete(0, 'end')
+                GUIFindKOL.rightBox.delete(0, "end")
                 kolList = KOL(GUIFindKOL.impactNumber, GUIFindKOL.percentNumber)
                 for item in kolList:
-                    GUIFindKOL.rightBox.insert('end', item)
+                    GUIFindKOL.rightBox.insert("end", item)
 
-            emptyLabel2 = tk.Label(kol, text=' ', font=('Arial', 16), height=1).pack()
-            findButton = tk.Button(kol, text="Find KOL", command=addKOL, font=('Arial', 16), height=2, width=20,
-                                   bg='light grey').pack()
+            emptyLabel2 = tk.Label(kol, text=" ", font=("Arial", 16), height=1).pack()
+            findButton = tk.Button(kol, text="Find KOL", command=addKOL, font=("Arial", 16), height=2, width=20,
+                                   bg="light grey").pack()
 
             kol.mainloop()
 
-        func1 = tk.Button(frame_l, text="User Impact Index", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func1 = tk.Button(frame_l, text="User Impact Index", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIUserImpactIndex).pack()
-        func2 = tk.Button(frame_l, text="Post Impact Index", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func2 = tk.Button(frame_l, text="Post Impact Index", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIPostImpactIndex).pack()
-        func3 = tk.Button(frame_r, text="Friendship Index", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func3 = tk.Button(frame_r, text="Friendship Index", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIFriendshipIndex).pack()
-        func4 = tk.Button(frame_r, text="Quotation Index", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func4 = tk.Button(frame_r, text="Quotation Index", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIQuotationIndex).pack()
-        func5 = tk.Button(advWindow, text="Find KOL", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func5 = tk.Button(advWindow, text="Find KOL", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIFindKOL).pack()
         advWindow.mainloop()
 
@@ -261,38 +263,38 @@
         basWindow.title("Basic Functions")
         basWindow.geometry("600x400")
 
-        basLabel = tk.Label(basWindow, text='Basic Functions', font=('Arial', 16)).pack()
+        basLabel = tk.Label(basWindow, text="Basic Functions", font=("Arial", 16)).pack()
 
         frame = tk.Frame(basWindow)
         frame.pack()
         frame_l = tk.Frame(frame)
-        frame_l.pack(side='left')
+        frame_l.pack(side="left")
         frame_r = tk.Frame(frame)
-        frame_r.pack(side='right')
+        frame_r.pack(side="right")
 
         def GUIAnchor():
             anchor = tk.Tk()
-            anchor.title('Anchor')
+            anchor.title("Anchor")
             anchor.geometry("600x400")
-            titleLabel = tk.Label(anchor, text='Anchor', font=('Arial', 16)).pack()
-            emptyLabel = tk.Label(anchor, text=' ', font=('Arial', 16), height=5)
-            hintLabel = tk.Label(anchor, text='Enter Report Title', font=('Arial', 12))
+            titleLabel = tk.Label(anchor, text="Anchor", font=("Arial", 16)).pack()
+            emptyLabel = tk.Label(anchor, text=" ", font=("Arial", 16), height=5)
+            hintLabel = tk.Label(anchor, text="Enter Report Title", font=("Arial", 12))
 
             leftFrame = tk.Frame(anchor)
             middleFrame = tk.Frame(anchor)
             rightFrame = tk.Frame(anchor)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
 
-            leftLabel = tk.Label(leftFrame, text='Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Post", font=("Arial", 12)).pack()
             GUIAnchor.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                GUIAnchor.leftBox.insert('end', item)
+                GUIAnchor.leftBox.insert("end", item)
             GUIAnchor.leftBox.pack()
 
             var = tk.StringVar(anchor)
-            GUIAnchor.choice = ''
+            GUIAnchor.choice = ""
 
             def getAnchor():
                 var.set(GUI.postList[GUIAnchor.leftBox.curselection()[0]])
@@ -302,44 +304,44 @@
             emptyLabel.pack()
             hintLabel.pack()
             reportEntry = tk.Entry(anchor, show=None, textvariable=var).pack()
-            reportButton = tk.Button(anchor, text="Find Anchor", command=getAnchor, font=('Arial', 16), height=2,
-                                     width=20, bg='light grey').pack(side='bottom')
+            reportButton = tk.Button(anchor, text="Find Anchor", command=getAnchor, font=("Arial", 16), height=2,
+                                     width=20, bg="light grey").pack(side="bottom")
 
-            rightLabel = tk.Label(rightFrame, text='Anchor', font=('Arial', 12)).pack()
+            rightLabel = tk.Label(rightFrame, text="Anchor", font=("Arial", 12)).pack()
             GUIAnchor.rightBox = tk.Listbox(rightFrame, height=15)
 
             def printReport():
                 reportList = [Anchor(GUIAnchor.choice)]
-                GUIAnchor.rightBox.delete(0, 'end')
+                GUIAnchor.rightBox.delete(0, "end")
                 for item in reportList:
-                    GUIAnchor.rightBox.insert('end', item)
+                    GUIAnchor.rightBox.insert("end", item)
 
             GUIAnchor.rightBox.pack()
             anchor.mainloop()
 
         def GUIDirectReport():
             dR = tk.Tk()
-            dR.title('Direct Report')
+            dR.title("Direct Report")
             dR.geometry("600x400")
-            titleLabel = tk.Label(dR, text='Direct Report', font=('Arial', 16)).pack()
-            emptyLabel = tk.Label(dR, text=' ', font=('Arial', 16), height=5)
-            hintLabel = tk.Label(dR, text='Enter Post Title', font=('Arial', 12))
+            titleLabel = tk.Label(dR, text="Direct Report", font=("Arial", 16)).pack()
+            emptyLabel = tk.Label(dR, text=" ", font=("Arial", 16), height=5)
+            hintLabel = tk.Label(dR, text="Enter Post Title", font=("Arial", 12))
 
             leftFrame = tk.Frame(dR)
             middleFrame = tk.Frame(dR)
             rightFrame = tk.Frame(dR)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
 
-            leftLabel = tk.Label(leftFrame, text='Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Post", font=("Arial", 12)).pack()
             GUIDirectReport.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                GUIDirectReport.leftBox.insert('end', item)
+                GUIDirectReport.leftBox.insert("end", item)
             GUIDirectReport.leftBox.pack()
 
             var = tk.StringVar(dR)
-            GUIDirectReport.choice = ''
+            GUIDirectReport.choice = ""
 
             def getReport():
                 var.set(GUI.postList[GUIDirectReport.leftBox.curselection()[0]])
@@ -349,17 +351,17 @@
             emptyLabel.pack()
             hintLabel.pack()
             reportEntry = tk.Entry(dR, show=None, textvariable=var).pack()
-            reportButton = tk.Button(dR, text="Find Direct Report", command=getReport, font=('Arial', 16), height=2,
-                                     width=20, bg='light grey').pack(side='bottom')
+            reportButton = tk.Button(dR, text="Find Direct Report", command=getReport, font=("Arial", 16), height=2,
+                                     width=20, bg="light grey").pack(side="bottom")
 
-            rightLabel = tk.Label(rightFrame, text='Direct Report', font=('Arial', 12)).pack()
+            rightLabel = tk.Label(rightFrame, text="Direct Report", font=("Arial", 12)).pack()
             GUIDirectReport.rightBox = tk.Listbox(rightFrame, height=15)
 
             def printReport():
                 reportList = DirectReport(GUIDirectReport.choice)
-                GUIDirectReport.rightBox.delete(0, 'end')
+                GUIDirectReport.rightBox.delete(0, "end")
                 for item in reportList:
-                    GUIDirectReport.rightBox.insert('end', item)
+                    GUIDirectReport.rightBox.insert("end", item)
 
             GUIDirectReport.rightBox.pack()
             dR.mainloop()
@@ -368,18 +370,18 @@
             import tkinter.messagebox
 
             GA = tk.Tk()
-            GA.title('Get Article')
+            GA.title("Get Article")
             GA.geometry("600x400")
-            titleLabel = tk.Label(GA, text='New Article', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(GA, text="New Article", font=("Arial", 16)).pack()
 
             middleFrame = tk.Frame(GA)
             rightFrame = tk.Frame(GA)
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
             middleLeft = tk.Frame(middleFrame)
             middleRight = tk.Frame(middleFrame)
-            middleLeft.pack(side='left')
-            middleRight.pack(side='right')
+            middleLeft.pack(side="left")
+            middleRight.pack(side="right")
             middleBottom = tk.Frame(GA)
             middleBottom.pack()
 
@@ -388,17 +390,17 @@
             quoteVar = tk.StringVar(GA)
             contentVar = tk.StringVar(GA)
 
-            emptyLabel3 = tk.Label(middleLeft, text='', font=('Arial', 6)).pack()
-            titleLabel = tk.Label(middleLeft, text='Post Title').pack()
+            emptyLabel3 = tk.Label(middleLeft, text="", font=("Arial", 6)).pack()
+            titleLabel = tk.Label(middleLeft, text="Post Title").pack()
             GUIGetA.titleEntry = tk.Entry(middleRight, show=None, textvariable=titleVar).pack()
-            emptyLabel1 = tk.Label(middleLeft, text='').pack()
-            emptyLabel2 = tk.Label(middleRight, text='').pack()
-            authorLabel = tk.Label(middleLeft, text='Author').pack()
+            emptyLabel1 = tk.Label(middleLeft, text="").pack()
+            emptyLabel2 = tk.Label(middleRight, text="").pack()
+            authorLabel = tk.Label(middleLeft, text="Author").pack()
             GUIGetA.authorEntry = tk.Entry(middleRight, show=None, textvariable=authorVar).pack()
-            quoteLabel = tk.Label(middleLeft, text='Quotation').pack()
+            quoteLabel = tk.Label(middleLeft, text="Quotation").pack()
             GUIGetA.quoteEntry = tk.Entry(middleRight, show=None, textvariable=quoteVar).pack()
 
-            contentLabel = tk.Label(middleLeft, text='Content').pack()
+            contentLabel = tk.Label(middleLeft, text="Content").pack()
             GUIGetA.contentText = tk.Text(middleBottom, height=7)
             GUIGetA.contentText.pack()
 
@@ -406,28 +408,28 @@
                 title = titleVar.get()
                 author = authorVar.get()
                 quote = quoteVar.get()
-                content = GUIGetA.contentText.get("1.0", 'end-1c')
-                if title != '' and author != '' and content != '':
-                    if quote == '':
-                        quote = 'null'
-                    writeFile = open('post/' + title + '.txt', 'w', encoding='UTF-8')
-                    writeFile.write('%s\n%s\n%s\n%s\n' % (title, author, quote, content))
+                content = GUIGetA.contentText.get("1.0", "end-1c")
+                if title != "" and author != "" and content != "":
+                    if quote == "":
+                        quote = "null"
+                    writeFile = open("post/" + title + ".txt", "w", encoding="UTF-8")
+                    writeFile.write("%s\n%s\n%s\n%s\n" % (title, author, quote, content))
                     writeFile.close()
 
                     postFileList = os.listdir("post")
                     GUI.postList = []
                     for postFile in postFileList:
-                        readFile = open("post/" + postFile, encoding='UTF-8')
+                        readFile = open("post/" + postFile, encoding="UTF-8")
                         fileTitle = readFile.readline()
                         GUI.postList.append(fileTitle.strip())
 
-                    tkinter.messagebox.showinfo(title='Done', message='Article Saved')
+                    tkinter.messagebox.showinfo(title="Done", message="Article Saved")
 
                 else:
-                    tkinter.messagebox.showerror(title='Error', message='Article Not Finished')
+                    tkinter.messagebox.showerror(title="Error", message="Article Not Finished")
 
-            printButton = tk.Button(middleBottom, text='Add New Article', command=GetData, font=("Arial", 16), width=20,
-                                    height=2, bg='light grey').pack()
+            printButton = tk.Button(middleBottom, text="Add New Article", command=GetData, font=("Arial", 16), width=20,
+                                    height=2, bg="light grey").pack()
 
             GA.mainloop()
 
@@ -435,18 +437,18 @@
             import tkinter.messagebox
 
             GU = tk.Tk()
-            GU.title('Get User')
+            GU.title("Get User")
             GU.geometry("600x400")
-            titleLabel = tk.Label(GU, text='New User', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(GU, text="New User", font=("Arial", 16)).pack()
 
             middleFrame = tk.Frame(GU)
             rightFrame = tk.Frame(GU)
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
             middleLeft = tk.Frame(middleFrame)
             middleRight = tk.Frame(middleFrame)
-            middleLeft.pack(side='left')
-            middleRight.pack(side='right')
+            middleLeft.pack(side="left")
+            middleRight.pack(side="right")
             middleBottom = tk.Frame(GU)
             middleBottom.pack()
 
@@ -459,17 +461,17 @@
             friendVar = tk.StringVar(GU)
             postVar = tk.StringVar(GU)
 
-            nameLabel = tk.Label(middleLeft, text='User Name').pack()
+            nameLabel = tk.Label(middleLeft, text="User Name").pack()
             nameEntry = tk.Entry(middleRight, show=None, textvariable=nameVar).pack()
-            firstnameLabel = tk.Label(middleLeft, text='Real First Name').pack()
+            firstnameLabel = tk.Label(middleLeft, text="Real First Name").pack()
             firstnameEntry = tk.Entry(middleRight, show=None, textvariable=firstnameVar).pack()
-            lastnameLabel = tk.Label(middleLeft, text='Real Last Name').pack()
+            lastnameLabel = tk.Label(middleLeft, text="Real Last Name").pack()
             lastnameEntry = tk.Entry(middleRight, show=None, textvariable=lastnameVar).pack()
-            passLabel = tk.Label(middleLeft, text='Password').pack()
+            passLabel = tk.Label(middleLeft, text="Password").pack()
             passEntry = tk.Entry(middleRight, show=None, textvariable=passVar).pack()
-            birthdayLabel = tk.Label(middleLeft, text='Birthday').pack()
+            birthdayLabel = tk.Label(middleLeft, text="Birthday").pack()
             birthdayEntry = tk.Entry(middleRight, show=None, textvariable=birthdayVar).pack()
-            phoneLabel = tk.Label(middleLeft, text='Phone').pack()
+            phoneLabel = tk.Label(middleLeft, text="Phone").pack()
             phoneEntry = tk.Entry(middleRight, show=None, textvariable=phoneVar).pack()
             friendLabel = tk.Label(middleLeft, text="Friend (Seperate with';')").pack()
             friendEntry = tk.Entry(middleRight, show=None, textvariable=friendVar, width=30).pack()
@@ -485,15 +487,15 @@
                 phone = phoneVar.get()
                 friend = friendVar.get()
                 post = postVar.get()
-                if name != '' and password != '':
-                    writeFile = open('user.txt', 'a', encoding='UTF-8')
-                    writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+                if name != "" and password != "":
+                    writeFile = open("user.txt", "a", encoding="UTF-8")
+                    writeFile.write("%s,%s,%s,%s,%s,%s,%s,%s\n" % (
                     name, firstname, lastname, password, birthday, phone, friend, post))
                     writeFile.close()
-                    tkinter.messagebox.showinfo(title='Done', message='User Saved')
+                    tkinter.messagebox.showinfo(title="Done", message="User Saved")
 
                     def GetUserName():
-                        user = open('user.txt', encoding='UTF-8')
+                        user = open("user.txt", encoding="UTF-8")
                         userInfoList = []
                         for userInfo in user:
                             userInfoList.append(userInfo.strip())
@@ -501,44 +503,44 @@
                         for userInfo in userInfoList:
                             name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str,
                                                                                                            userInfo.split(
-                                                                                                               ','))
+                                                                                                               ","))
                             nameList.append(name)
                         return nameList
 
                     GUI.nameList = GetUserName()
 
                 else:
-                    tkinter.messagebox.showerror(title='Error', message='User Information Not Finished')
+                    tkinter.messagebox.showerror(title="Error", message="User Information Not Finished")
 
-            printButton = tk.Button(middleBottom, text='Add New User', command=GetData, font=("Arial", 16), width=20,
-                                    height=2, bg='light grey').pack()
+            printButton = tk.Button(middleBottom, text="Add New User", command=GetData, font=("Arial", 16), width=20,
+                                    height=2, bg="light grey").pack()
 
             GU.mainloop()
 
         def GUIIsDirectSource():
             isDirectSource = tk.Tk()
-            isDirectSource.title('Is Direct Source?')
+            isDirectSource.title("Is Direct Source?")
             isDirectSource.geometry("600x400")
-            titleLabel = tk.Label(isDirectSource, text='Is Direct Source?', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(isDirectSource, text="Is Direct Source?", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(isDirectSource)
             middleFrame = tk.Frame(isDirectSource)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Post", font=("Arial", 12)).pack()
             isDirectSource.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                isDirectSource.leftBox.insert('end', item)
+                isDirectSource.leftBox.insert("end", item)
             isDirectSource.leftBox.pack()
 
             var1 = tk.StringVar(isDirectSource)
             var2 = tk.StringVar(isDirectSource)
             indexVar = tk.StringVar(isDirectSource)
-            emptyLabel = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            user1Label = tk.Label(middleFrame, text="Enter Source", font=('Arial', 12)).pack()
+            emptyLabel = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            user1Label = tk.Label(middleFrame, text="Enter Source", font=("Arial", 12)).pack()
             user1Entry = tk.Entry(middleFrame, show=None, textvariable=var1).pack()
-            user2Label = tk.Label(middleFrame, text="Enter Report", font=('Arial', 12)).pack()
+            user2Label = tk.Label(middleFrame, text="Enter Report", font=("Arial", 12)).pack()
             user2Entry = tk.Entry(middleFrame, show=None, textvariable=var2).pack()
 
             def GetVar():
@@ -548,37 +550,37 @@
                 elif indexNumber == False:
                     indexVar.set("No")
 
-            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=('Arial', 16),
-                                    bg='light grey').pack()
-            emptyLabel2 = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            hintLabel = tk.Label(middleFrame, text="Is Direct Source?", font=('Arial', 12)).pack()
+            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=("Arial", 16),
+                                    bg="light grey").pack()
+            emptyLabel2 = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            hintLabel = tk.Label(middleFrame, text="Is Direct Source?", font=("Arial", 12)).pack()
             numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
             isDirectSource.mainloop()
 
         def GUIIsSource():
             isSource = tk.Tk()
-            isSource.title('Is Source?')
+            isSource.title("Is Source?")
             isSource.geometry("600x400")
-            titleLabel = tk.Label(isSource, text='Is Source?', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(isSource, text="Is Source?", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(isSource)
             middleFrame = tk.Frame(isSource)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Post", font=("Arial", 12)).pack()
             isSource.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                isSource.leftBox.insert('end', item)
+                isSource.leftBox.insert("end", item)
             isSource.leftBox.pack()
 
             var1 = tk.StringVar(isSource)
             var2 = tk.StringVar(isSource)
             indexVar = tk.StringVar(isSource)
-            emptyLabel = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            user1Label = tk.Label(middleFrame, text="Enter Source", font=('Arial', 12)).pack()
+            emptyLabel = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            user1Label = tk.Label(middleFrame, text="Enter Source", font=("Arial", 12)).pack()
             user1Entry = tk.Entry(middleFrame, show=None, textvariable=var1).pack()
-            user2Label = tk.Label(middleFrame, text="Enter Report", font=('Arial', 12)).pack()
+            user2Label = tk.Label(middleFrame, text="Enter Report", font=("Arial", 12)).pack()
             user2Entry = tk.Entry(middleFrame, show=None, textvariable=var2).pack()
 
             def GetVar():
@@ -588,37 +590,37 @@
                 elif indexNumber == False:
                     indexVar.set("No")
 
-            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=('Arial', 16),
-                                    bg='light grey').pack()
-            emptyLabel2 = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            hintLabel = tk.Label(middleFrame, text="Is Source?", font=('Arial', 12)).pack()
+            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=("Arial", 16),
+                                    bg="light grey").pack()
+            emptyLabel2 = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            hintLabel = tk.Label(middleFrame, text="Is Source?", font=("Arial", 12)).pack()
             numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
             isSource.mainloop()
 
         def GUIIsFriend():
             isFriend = tk.Tk()
-            isFriend.title('Is Friend?')
+            isFriend.title("Is Friend?")
             isFriend.geometry("600x400")
-            titleLabel = tk.Label(isFriend, text='Is Friend?', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(isFriend, text="Is Friend?", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(isFriend)
             middleFrame = tk.Frame(isFriend)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Users', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Users", font=("Arial", 12)).pack()
             GUIIsFriend.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.nameList:
-                GUIIsFriend.leftBox.insert('end', item)
+                GUIIsFriend.leftBox.insert("end", item)
             GUIIsFriend.leftBox.pack()
 
             var1 = tk.StringVar(isFriend)
             var2 = tk.StringVar(isFriend)
             indexVar = tk.StringVar(isFriend)
-            emptyLabel = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            user1Label = tk.Label(middleFrame, text="Enter User 1", font=('Arial', 12)).pack()
+            emptyLabel = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            user1Label = tk.Label(middleFrame, text="Enter User 1", font=("Arial", 12)).pack()
             user1Entry = tk.Entry(middleFrame, show=None, textvariable=var1).pack()
-            user2Label = tk.Label(middleFrame, text="Enter User 2", font=('Arial', 12)).pack()
+            user2Label = tk.Label(middleFrame, text="Enter User 2", font=("Arial", 12)).pack()
             user2Entry = tk.Entry(middleFrame, show=None, textvariable=var2).pack()
 
             def GetVar():
@@ -628,16 +630,16 @@
                 elif indexNumber == False:
                     indexVar.set("No")
 
-            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=('Arial', 16),
-                                    bg='light grey').pack()
-            emptyLabel2 = tk.Label(middleFrame, text=' ', font=('Arial', 16), height=2).pack()
-            hintLabel = tk.Label(middleFrame, text="user 1 and user 2 are friends?", font=('Arial', 12)).pack()
+            checkButton = tk.Button(middleFrame, text="Check", command=GetVar, height=2, width=10, font=("Arial", 16),
+                                    bg="light grey").pack()
+            emptyLabel2 = tk.Label(middleFrame, text=" ", font=("Arial", 16), height=2).pack()
+            hintLabel = tk.Label(middleFrame, text="user 1 and user 2 are friends?", font=("Arial", 12)).pack()
             numEntry = tk.Entry(middleFrame, textvariable=indexVar).pack()
             isFriend.mainloop()
 
         def GUINicePrintU():
             def EditNicePrintU(userName):
-                user = open('user.txt')
+                user = open("user.txt")
                 userInfoList = []
                 for userInfo in user:
                     userInfoList.append(userInfo.strip())
@@ -651,7 +653,7 @@
                 postList = []
                 for userInfo in userInfoList:
                     name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str,
-                                                                                                   userInfo.split(','))
+                                                                                                   userInfo.split(","))
                     nameList.append(name)
                     firstnameList.append(firstname)
                     lastnameList.append(lastname)
@@ -661,12 +663,12 @@
                     friendList.append(friend)
                     postList.append(post)
                 index = -1
-                name = ''
-                firstname = ''
-                lastname = ''
-                password = ''
-                birthday = ''
-                phoneNumber = ''
+                name = ""
+                firstname = ""
+                lastname = ""
+                password = ""
+                birthday = ""
+                phoneNumber = ""
                 friendNameList = []
                 postTitleList = []
                 for alluser in nameList:
@@ -678,34 +680,34 @@
                         password = passwordList[index]
                         birthday = birthdayList[index]
                         phoneNumber = phoneNumberList[index]
-                        friendNameList = friendList[index].split(';')
-                        postTitleList = postList[index].split(';')
+                        friendNameList = friendList[index].split(";")
+                        postTitleList = postList[index].split(";")
 
                 user.close()
                 return [name, firstname, lastname, password, birthday, phoneNumber, friendNameList, postTitleList]
 
             NPU = tk.Tk()
-            NPU.title('Nice Print User')
+            NPU.title("Nice Print User")
             NPU.geometry("600x400")
-            titleLabel = tk.Label(NPU, text='Nice Print User', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(NPU, text="Nice Print User", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(NPU)
             middleFrame = tk.Frame(NPU)
             rightFrame = tk.Frame(NPU)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
             middleLeft = tk.Frame(middleFrame)
             middleRight = tk.Frame(middleFrame)
-            middleLeft.pack(side='left')
-            middleRight.pack(side='right')
+            middleLeft.pack(side="left")
+            middleRight.pack(side="right")
             middleBottom = tk.Frame(NPU)
             middleBottom.pack()
 
-            leftLabel = tk.Label(leftFrame, text='Choose User', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Choose User", font=("Arial", 12)).pack()
             GUINicePrintU.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.nameList:
-                GUINicePrintU.leftBox.insert('end', item)
+                GUINicePrintU.leftBox.insert("end", item)
             GUINicePrintU.leftBox.pack()
 
             nameVar = tk.StringVar(NPU)
@@ -715,22 +717,22 @@
             phoneVar = tk.StringVar(NPU)
             birthdayVar = tk.StringVar(NPU)
 
-            nameLabel = tk.Label(middleLeft, text='User Name').pack()
+            nameLabel = tk.Label(middleLeft, text="User Name").pack()
             nameEntry = tk.Entry(middleRight, show=None, textvariable=nameVar).pack()
-            firstnameLabel = tk.Label(middleLeft, text='Real First Name').pack()
+            firstnameLabel = tk.Label(middleLeft, text="Real First Name").pack()
             firstnameEntry = tk.Entry(middleRight, show=None, textvariable=firstnameVar).pack()
-            lastnameLabel = tk.Label(middleLeft, text='Real Last Name').pack()
+            lastnameLabel = tk.Label(middleLeft, text="Real Last Name").pack()
             lastnameEntry = tk.Entry(middleRight, show=None, textvariable=lastnameVar).pack()
-            passLabel = tk.Label(middleLeft, text='Password').pack()
+            passLabel = tk.Label(middleLeft, text="Password").pack()
             passEntry = tk.Entry(middleRight, show=None, textvariable=passVar).pack()
-            birthdayLabel = tk.Label(middleLeft, text='Birthday').pack()
+            birthdayLabel = tk.Label(middleLeft, text="Birthday").pack()
             birthdayEntry = tk.Entry(middleRight, show=None, textvariable=birthdayVar).pack()
-            phoneLabel = tk.Label(middleLeft, text='Phone').pack()
+            phoneLabel = tk.Label(middleLeft, text="Phone").pack()
             phoneEntry = tk.Entry(middleRight, show=None, textvariable=phoneVar).pack()
-            friendLabel = tk.Label(middleLeft, text='Friend').pack()
+            friendLabel = tk.Label(middleLeft, text="Friend").pack()
             GUINicePrintU.friendBox = tk.Listbox(middleLeft, height=7)
             GUINicePrintU.friendBox.pack()
-            postLabel = tk.Label(middleRight, text='Post').pack()
+            postLabel = tk.Label(middleRight, text="Post").pack()
             GUINicePrintU.postBox = tk.Listbox(middleRight, height=7)
             GUINicePrintU.postBox.pack()
 
@@ -743,24 +745,24 @@
                 lastnameVar.set(userData[2])
                 phoneVar.set(userData[5])
                 birthdayVar.set(userData[4])
-                GUINicePrintU.friendBox.delete(0, 'end')
+                GUINicePrintU.friendBox.delete(0, "end")
                 for item in userData[6]:
-                    GUINicePrintU.friendBox.insert('end', item)
-                GUINicePrintU.postBox.delete(0, 'end')
+                    GUINicePrintU.friendBox.insert("end", item)
+                GUINicePrintU.postBox.delete(0, "end")
                 for post in userData[7]:
-                    GUINicePrintU.postBox.insert('end', post)
+                    GUINicePrintU.postBox.insert("end", post)
 
-            printButton = tk.Button(middleBottom, text='Print User', command=GetData, font=("Arial", 16), width=20,
-                                    height=2, bg='light grey').pack()
+            printButton = tk.Button(middleBottom, text="Print User", command=GetData, font=("Arial", 16), width=20,
+                                    height=2, bg="light grey").pack()
 
             NPU.mainloop()
 
         def GUINicePrintA():
             def EditNicePrintA(postName):
                 try:
-                    post = open('post/' + str(postName) + '.txt', encoding='UTF-8')
+                    post = open("post/" + str(postName) + ".txt", encoding="UTF-8")
                 except IOError:
-                    return ['', '', '', ['']]
+                    return ["", "", "", [""]]
                 titleString = post.readline()
                 title = titleString.strip()
                 authorString = post.readline()
@@ -774,28 +776,28 @@
                 return [title, author, quote, content]
 
             NPA = tk.Tk()
-            NPA.title('Nice Print Article')
+            NPA.title("Nice Print Article")
             NPA.geometry("600x400")
-            titleLabel = tk.Label(NPA, text='Nice Print Article', font=('Arial', 16)).pack()
+            titleLabel = tk.Label(NPA, text="Nice Print Article", font=("Arial", 16)).pack()
 
             leftFrame = tk.Frame(NPA)
             middleFrame = tk.Frame(NPA)
             rightFrame = tk.Frame(NPA)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
             middleLeft = tk.Frame(middleFrame)
             middleRight = tk.Frame(middleFrame)
-            middleLeft.pack(side='left')
-            middleRight.pack(side='right')
+            middleLeft.pack(side="left")
+            middleRight.pack(side="right")
             middleBottom = tk.Frame(NPA)
             middleBottom.pack()
             middleDown = tk.Frame(middleFrame)
 
-            leftLabel = tk.Label(leftFrame, text='Choose Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Choose Post", font=("Arial", 12)).pack()
             GUINicePrintA.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                GUINicePrintA.leftBox.insert('end', item)
+                GUINicePrintA.leftBox.insert("end", item)
             GUINicePrintA.leftBox.pack()
 
             titleVar = tk.StringVar(NPA)
@@ -803,17 +805,17 @@
             quoteVar = tk.StringVar(NPA)
             contentVar = tk.StringVar(NPA)
 
-            emptyLabel3 = tk.Label(middleLeft, text='', font=('Arial', 6)).pack()
-            titleLabel = tk.Label(middleLeft, text='Post Title').pack()
+            emptyLabel3 = tk.Label(middleLeft, text="", font=("Arial", 6)).pack()
+            titleLabel = tk.Label(middleLeft, text="Post Title").pack()
             titleEntry = tk.Entry(middleRight, show=None, textvariable=titleVar).pack()
-            emptyLabel1 = tk.Label(middleLeft, text='').pack()
-            emptyLabel2 = tk.Label(middleRight, text='').pack()
-            authorLabel = tk.Label(middleLeft, text='Author').pack()
+            emptyLabel1 = tk.Label(middleLeft, text="").pack()
+            emptyLabel2 = tk.Label(middleRight, text="").pack()
+            authorLabel = tk.Label(middleLeft, text="Author").pack()
             authorEntry = tk.Entry(middleRight, show=None, textvariable=authorVar).pack()
-            quoteLabel = tk.Label(middleLeft, text='Quotation').pack()
+            quoteLabel = tk.Label(middleLeft, text="Quotation").pack()
             quoteEntry = tk.Entry(middleRight, show=None, textvariable=quoteVar).pack()
 
-            contentLabel = tk.Label(middleLeft, text='Content').pack()
+            contentLabel = tk.Label(middleLeft, text="Content").pack()
             GUINicePrintA.contentText = tk.Text(middleBottom, height=7)
             GUINicePrintA.contentText.pack()
 
@@ -823,38 +825,38 @@
                 userData = EditNicePrintA(postName)
                 authorVar.set(userData[1])
                 quoteVar.set(userData[2])
-                GUINicePrintA.contentText.delete('1.0', 'end')
+                GUINicePrintA.contentText.delete("1.0", "end")
                 for item in userData[3]:
-                    GUINicePrintA.contentText.insert('end', item)
+                    GUINicePrintA.contentText.insert("end", item)
 
-            printButton = tk.Button(middleBottom, text='Print Post', command=GetData, font=("Arial", 16), width=20,
-                                    height=2, bg='light grey').pack()
+            printButton = tk.Button(middleBottom, text="Print Post", command=GetData, font=("Arial", 16), width=20,
+                                    height=2, bg="light grey").pack()
 
             NPA.mainloop()
 
         def GUIReport():
             R = tk.Tk()
-            R.title('Report')
+            R.title("Report")
             R.geometry("600x400")
-            titleLabel = tk.Label(R, text='Report', font=('Arial', 16)).pack()
-            emptyLabel = tk.Label(R, text=' ', font=('Arial', 16), height=5)
-            hintLabel = tk.Label(R, text='Post Title', font=('Arial', 12))
+            titleLabel = tk.Label(R, text="Report", font=("Arial", 16)).pack()
+            emptyLabel = tk.Label(R, text=" ", font=("Arial", 16), height=5)
+            hintLabel = tk.Label(R, text="Post Title", font=("Arial", 12))
 
             leftFrame = tk.Frame(R)
             middleFrame = tk.Frame(R)
             rightFrame = tk.Frame(R)
-            leftFrame.pack(side='left')
+            leftFrame.pack(side="left")
             middleFrame.pack()
-            rightFrame.pack(side='right')
+            rightFrame.pack(side="right")
 
-            leftLabel = tk.Label(leftFrame, text='Choose Post', font=('Arial', 12)).pack()
+            leftLabel = tk.Label(leftFrame, text="Choose Post", font=("Arial", 12)).pack()
             GUIReport.leftBox = tk.Listbox(leftFrame, height=15)
             for item in GUI.postList:
-                GUIReport.leftBox.insert('end', item)
+                GUIReport.leftBox.insert("end", item)
             GUIReport.leftBox.pack()
 
             var = tk.StringVar(R)
-            GUIReport.choice = ''
+            GUIReport.choice = ""
 
             def getReport():
                 var.set(GUI.postList[GUIReport.leftBox.curselection()[0]])
@@ -864,50 +866,50 @@
             emptyLabel.pack()
             hintLabel.pack()
             reportEntry = tk.Entry(R, show=None, textvariable=var).pack()
-            reportButton = tk.Button(R, text="Find Report", command=getReport, font=('Arial', 16), height=2, width=20,
-                                     bg='light grey').pack(side='bottom')
+            reportButton = tk.Button(R, text="Find Report", command=getReport, font=("Arial", 16), height=2, width=20,
+                                     bg="light grey").pack(side="bottom")
 
-            rightLabel = tk.Label(rightFrame, text='Report', font=('Arial', 12)).pack()
+            rightLabel = tk.Label(rightFrame, text="Report", font=("Arial", 12)).pack()
             GUIReport.rightBox = tk.Listbox(rightFrame, height=15)
 
             def printReport():
                 reportList = Report(GUIReport.choice)
-                GUIReport.rightBox.delete(0, 'end')
+                GUIReport.rightBox.delete(0, "end")
                 for item in reportList:
-                    GUIReport.rightBox.insert('end', item)
+                    GUIReport.rightBox.insert("end", item)
 
             GUIReport.rightBox.pack()
             R.mainloop()
 
-        func1 = tk.Button(frame_l, text="Anchor", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func1 = tk.Button(frame_l, text="Anchor", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIAnchor).pack()
-        func2 = tk.Button(frame_l, text="Direct Report", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func2 = tk.Button(frame_l, text="Direct Report", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIDirectReport).pack()
-        func3 = tk.Button(frame_l, text="GetA", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func3 = tk.Button(frame_l, text="GetA", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIGetA).pack()
-        func4 = tk.Button(frame_l, text="GetU", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func4 = tk.Button(frame_l, text="GetU", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIGetU).pack()
-        func5 = tk.Button(frame_l, text="Is Direct Source", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func5 = tk.Button(frame_l, text="Is Direct Source", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIIsDirectSource).pack()
-        func6 = tk.Button(frame_r, text="Is Source", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func6 = tk.Button(frame_r, text="Is Source", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIIsSource).pack()
-        func7 = tk.Button(frame_r, text="Is Friend", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func7 = tk.Button(frame_r, text="Is Friend", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUIIsFriend).pack()
-        func8 = tk.Button(frame_r, text="Nice Print U", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func8 = tk.Button(frame_r, text="Nice Print U", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUINicePrintU).pack()
-        func9 = tk.Button(frame_r, text="Nice Print A", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func9 = tk.Button(frame_r, text="Nice Print A", font=("Arial", 12), width=20, height=2, bg="light grey",
                           command=GUINicePrintA).pack()
-        func10 = tk.Button(frame_r, text="Report", font=("Arial", 12), width=20, height=2, bg='light grey',
+        func10 = tk.Button(frame_r, text="Report", font=("Arial", 12), width=20, height=2, bg="light grey",
                            command=GUIReport).pack()
         basWindow.mainloop()
 
-    advButton = tk.Button(mainWindow, text="Advanced Function", font=("Arial", 16), width=20, height=2, bg='light gray',
+    advButton = tk.Button(mainWindow, text="Advanced Function", font=("Arial", 16), width=20, height=2, bg="light gray",
                           command=AdvancedScreen)
-    advButton.pack(side='bottom')
+    advButton.pack(side="bottom")
 
-    basButton = tk.Button(mainWindow, text="Basic Function", font=("Arial", 16), width=20, height=2, bg='light gray',
+    basButton = tk.Button(mainWindow, text="Basic Function", font=("Arial", 16), width=20, height=2, bg="light gray",
                           command=BasicScreen)
-    basButton.pack(side='bottom')
+    basButton.pack(side="bottom")
 
     mainWindow.mainloop()
 
@@ -922,10 +924,10 @@ def Anchor(reportPost):
     #This function is used to find source
     def GetSource(report):
         try:
-            postData = open( 'post/' +  report + '.txt' , encoding = 'UTF-8')
+            postData = open( "post/" +  report + ".txt" , encoding = "UTF-8")
         except IOError :   
-            print('Fail to open the file\n')
-            return 'Fail'
+            print("Fail to open the file\n")
+            return "Fail"
         line1 = postData.readline()   
         line2 = postData.readline()
         line3 = postData.readline()
@@ -936,10 +938,10 @@ def Anchor(reportPost):
     report = reportPost
     while True:
         source = GetSource(report)
-        if source == 'null':
+        if source == "null":
             return report
-        if source == 'Fail':
-            return ''
+        if source == "Fail":
+            return ""
         report = source
 
 
@@ -957,7 +959,7 @@ def DirectReport(anchor):
     reportList = []
     for postFile in postFileList:
         try:
-            readFile = open("post/" + postFile, encoding='UTF-8')
+            readFile = open("post/" + postFile, encoding="UTF-8")
         except IOError:
             print("Cannot open the file")
             return []
@@ -975,7 +977,7 @@ def DirectReport(anchor):
     return reportList
 
 
-"""This function calculates two users' friendship index
+"""This function calculates two users" friendship index
 It receives two user name and return their friendship index
 For the algorithm, please refer to the report
 
@@ -985,29 +987,29 @@ Written by Yunfei LIU Nov 13, 2020"""
 def FriendshipIndex(user1, user2):
     # This function receives a user name and return the post list
     def UserInfo(userName):
-        user = open('user.txt')
+        user = open("user.txt")
         userInfoList = []
         for userInfo in user:
             userInfoList.append(userInfo.strip())
         nameList = []
         postList = []
         for userInfo in userInfoList:
-            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
             nameList.append(name)
             postList.append(post)
         try:
             userIndex = nameList.index(userName)
         except ValueError:
             return []
-        userPostList = postList[userIndex].split(';')
+        userPostList = postList[userIndex].split(";")
         return userPostList
 
-    # This function receives a user's post and return the resource list
+    # This function receives a user"s post and return the resource list
     def UserQuoteList(postList):
         quoteList = []
         for post in postList:
             try:
-                postData = open('post/' + post + '.txt', encoding='UTF-8')
+                postData = open("post/" + post + ".txt", encoding="UTF-8")
             except IOError:
                 continue
             line1 = postData.readline()
@@ -1061,7 +1063,7 @@ def GetA():
 
         # Verify whether the title has already exist
         try:
-            existFile = open('post/' + title + '.txt', 'r', encoding='UTF-8')
+            existFile = open("post/" + title + ".txt", "r", encoding="UTF-8")
         except IOError:
             # Add other information
             author = str(input("Please enter the author: "))
@@ -1070,7 +1072,7 @@ def GetA():
             content = []
             while True:
                 try:
-                    content.append(input() + '\n')
+                    content.append(input() + "\n")
                 except:
                     break
             print("Check your title, author and quote:\n")
@@ -1078,15 +1080,15 @@ def GetA():
 
             # Let admin have a check
             commandChar = str(input("Please check the format carefully and enter [Y/y] to confirm, others to cancel: "))
-            if commandChar == 'Y' or commandChar == 'y':
+            if commandChar == "Y" or commandChar == "y":
                 try:
-                    writeFile = open('post/' + title + '.txt', 'w', encoding='UTF-8')
+                    writeFile = open("post/" + title + ".txt", "w", encoding="UTF-8")
                 except IOError:
                     print("Failed to create the file\n")
                     return False
-                writeFile.write('%s\n%s\n%s\n' % (title, author, quote))
+                writeFile.write("%s\n%s\n%s\n" % (title, author, quote))
                 for line in content:
-                    writeFile.write('%s' % line)
+                    writeFile.write("%s" % line)
                 writeFile.close()
                 print("\nWrite Successfully\n")
                 return True
@@ -1103,7 +1105,7 @@ def GetA():
         filePath = str(input("Please input the full path and name of the file: "))
         try:
             open(filePath)
-            fileData = open(filePath, encoding='UTF-8')
+            fileData = open(filePath, encoding="UTF-8")
         except IOError:
             print("\nCannot found the file\n")
             return False
@@ -1121,20 +1123,20 @@ def GetA():
             # Let admin have a check
             print("File found\n Check the information:\nTitle:%s\nAuthor:%s\nQuote:%s\n" % (title, author, quote))
             commandChar = str(input("Enter [C/c] to print the content, others to cancel printing: "))
-            if commandChar == 'C' or commandChar == 'c':
+            if commandChar == "C" or commandChar == "c":
                 for line in content:
                     print(line)
             commandChar = str(
                 input("\nPlease check all the information carefully and enter [Y/y] to confirm, others to cancel: "))
-            if commandChar == 'Y' or commandChar == 'y':
+            if commandChar == "Y" or commandChar == "y":
                 try:
-                    writeFile = open('post/' + title + '.txt', 'w', encoding='UTF-8')
+                    writeFile = open("post/" + title + ".txt", "w", encoding="UTF-8")
                 except IOError:
                     print("Failed to create the file\n")
                     return False
-                writeFile.write('%s\n%s\n%s\n' % (title, author, quote))
+                writeFile.write("%s\n%s\n%s\n" % (title, author, quote))
                 for line in content:
-                    writeFile.write('%s' % line)
+                    writeFile.write("%s" % line)
                 writeFile.close()
                 print("\nWrite Successfully\n")
                 return True
@@ -1146,11 +1148,11 @@ def GetA():
     while True:
         commandChar = str(
             input("Type [N/n] to get new account by keyboard, type [F/f] to get new by file, type [E/e] to exit: "))
-        if commandChar == 'n' or commandChar == 'N':
+        if commandChar == "n" or commandChar == "N":
             GetFromKeyboard()
-        if commandChar == 'F' or commandChar == 'f':
+        if commandChar == "F" or commandChar == "f":
             GetFromFile()
-        if commandChar == 'E' or commandChar == 'e':
+        if commandChar == "E" or commandChar == "e":
             return True
 
 
@@ -1183,9 +1185,9 @@ def GetU():
         commandChar = str(input("Please check the format carefully and enter [Y/y] to confirm, others to cancel: "))
 
         # Let user confirm
-        if commandChar == 'Y' or commandChar == 'y':
-            writeFile = open('user.txt', 'a')
-            writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+        if commandChar == "Y" or commandChar == "y":
+            writeFile = open("user.txt", "a")
+            writeFile.write("%s,%s,%s,%s,%s,%s,%s,%s\n" % (
             userName, firstname, lastname, password, birthday, phoneNumber, friend, post))
             writeFile.close()
             print("\nWrite Successfully")
@@ -1218,7 +1220,7 @@ def GetU():
             friendList = []
             postList = []
             for userInfo in userInfoList:
-                name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+                name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
                 nameList.append(name)
                 firstnameList.append(firstname)
                 lastnameList.append(lastname)
@@ -1235,12 +1237,12 @@ def GetU():
             commandChar = str(input("Please check it carefully and enter [Y/y] to confirm, others to cancel: "))
 
             # Le admin confirm
-            if commandChar == 'Y' or commandChar == 'y':
-                writeFile = open('user.txt', 'a')
+            if commandChar == "Y" or commandChar == "y":
+                writeFile = open("user.txt", "a")
                 for userInfo in userInfoList:
                     name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str,
-                                                                                                   userInfo.split(','))
-                    writeFile.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+                                                                                                   userInfo.split(","))
+                    writeFile.write("%s,%s,%s,%s,%s,%s,%s,%s\n" % (
                     name, firstname, lastname, password, birthday, phoneNumber, friend, post))
                 writeFile.close()
                 print("\nWrite Successfully\n")
@@ -1254,11 +1256,11 @@ def GetU():
     while True:
         commandChar = str(
             input("Type [N/n] to get new account by keyboard, type [F/f] to get new by file, type [E/e] to exit: "))
-        if commandChar == 'n' or commandChar == 'N':
+        if commandChar == "n" or commandChar == "N":
             GetFromKeyboard()
-        if commandChar == 'F' or commandChar == 'f':
+        if commandChar == "F" or commandChar == "f":
             GetFromFile()
-        if commandChar == 'E' or commandChar == 'e':
+        if commandChar == "E" or commandChar == "e":
             return True
 
 
@@ -1272,9 +1274,9 @@ Oct 27, 2020 created"""
 
 def IsDirectSource(post1, post2):
     try:
-        postData2 = open('post/' + post2 + '.txt', encoding='UTF-8')
+        postData2 = open("post/" + post2 + ".txt", encoding="UTF-8")
     except IOError:
-        print('Fail to open the file\n')
+        print("Fail to open the file\n")
         return False
     line1 = postData2.readline()
     line2 = postData2.readline()
@@ -1289,7 +1291,7 @@ def IsDirectSource(post1, post2):
 
 """This function is used to verify friendship
 It receives 2 user names and return a boolean
-If the users are in each other's friend list, return True
+If the users are in each other"s friend list, return True
 If not, return False
 
 Written by Yunfei LIU
@@ -1300,7 +1302,7 @@ Oct 27, 2020 created
 
 def IsFriend(userName1, userName2):
     # Get Data
-    user = open('user.txt')
+    user = open("user.txt")
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
@@ -1311,7 +1313,7 @@ def IsFriend(userName1, userName2):
     friendList = []
     postList = []
     for userInfo in userInfoList:
-        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
         nameList.append(name)
         friendList.append(friend)
 
@@ -1323,13 +1325,13 @@ def IsFriend(userName1, userName2):
         print("\nUser not found\n")
         user.close()
         return False
-    if friendList[index1] == ' ' or friendList[index2] == ' ':
+    if friendList[index1] == " " or friendList[index2] == " ":
         user.close()
         return False
 
-    # Check whether users in each other's friend list
-    friendNameList1 = friendList[index1].split(';')
-    friendNameList2 = friendList[index2].split(';')
+    # Check whether users in each other"s friend list
+    friendNameList1 = friendList[index1].split(";")
+    friendNameList2 = friendList[index2].split(";")
     for friendName1 in friendNameList1:
         if friendName1 == userName2:
             for friendName2 in friendNameList2:
@@ -1351,10 +1353,10 @@ Edited by Yunfei LIU Oct 31, 2020"""
 def IsSource(sourcePost, reportPost):
     def DirectSource(post):
         try:
-            postData = open('post/' + post + '.txt', encoding='UTF-8')
+            postData = open("post/" + post + ".txt", encoding="UTF-8")
         except IOError:
-            print('Fail to open the file\n')
-            return 'Fail'
+            print("Fail to open the file\n")
+            return "Fail"
         line1 = postData.readline()
         line2 = postData.readline()
         line3 = postData.readline()
@@ -1364,8 +1366,8 @@ def IsSource(sourcePost, reportPost):
 
     # This part is used to ensure the file names are valid
     try:
-        fin1 = open('post/' + sourcePost + '.txt', encoding='UTF-8')
-        fin2 = open('post/' + reportPost + '.txt', encoding='UTF-8')
+        fin1 = open("post/" + sourcePost + ".txt", encoding="UTF-8")
+        fin2 = open("post/" + reportPost + ".txt", encoding="UTF-8")
         fin1.close()
         fin2.close()
     except IOError:
@@ -1378,10 +1380,10 @@ def IsSource(sourcePost, reportPost):
         return True
 
     # Find all related posts
-    while (report != 'null'):
+    while (report != "null"):
         if report == source:
             return True
-        if report == 'null':
+        if report == "null":
             return False
         report = DirectSource(report)
     return False
@@ -1398,7 +1400,7 @@ Oct 27, 2020 created"""
 def NicePrintA(postName):
     # Get Data
     try:
-        post = open('post/' + str(postName) + '.txt', encoding='UTF-8')
+        post = open("post/" + str(postName) + ".txt", encoding="UTF-8")
     except IOError:
         print("\nFile not found\n")
         return False
@@ -1424,8 +1426,8 @@ def NicePrintA(postName):
     return True
 
 
-"""This function is used to print a user's profile
-it receives a user's name and return True while name found, return False when name not found
+"""This function is used to print a user"s profile
+it receives a user"s name and return True while name found, return False when name not found
 
 Written by Yunfei LIU
 Edit log:
@@ -1434,7 +1436,7 @@ Oct 24, 2020 created"""
 
 def NicePrintU(userName):
     # Get Data
-    user = open('user.txt')
+    user = open("user.txt")
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
@@ -1447,7 +1449,7 @@ def NicePrintU(userName):
     friendList = []
     postList = []
     for userInfo in userInfoList:
-        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
         nameList.append(name)
         firstnameList.append(firstname)
         lastnameList.append(lastname)
@@ -1470,18 +1472,18 @@ def NicePrintU(userName):
             print("Birthday:", birthdayList[index])
             print("Phone number:", phoneNumberList[index])
             print("\nfriends:")
-            if friendList[index] != ' ':
-                friendNameList = friendList[index].split(';')
+            if friendList[index] != " ":
+                friendNameList = friendList[index].split(";")
                 for friendName in friendNameList:
                     print(friendName)
             print("\nPosts:")
-            if postList[index] != ' ':
-                postTitleList = postList[index].split(';')
+            if postList[index] != " ":
+                postTitleList = postList[index].split(";")
                 for postTitle in postTitleList:
                     print(postTitle)
             user.close()
             return True
-    print("Cannot find a user named", userName, '\n')
+    print("Cannot find a user named", userName, "\n")
     user.close()
     return False
 
@@ -1506,7 +1508,7 @@ def PostImpactIndex(anchor):
         reportList = []
         for postFile in postFileList:
             try:
-                readFile = open("post/" + postFile, encoding='UTF-8')
+                readFile = open("post/" + postFile, encoding="UTF-8")
             except IOError:
                 print("Cannot open the file")
                 return []
@@ -1571,7 +1573,7 @@ def PostImpactIndex(anchor):
     return "{:.3f}".format(impactIndex)
 
 
-"""This function calculates two users' quotation index
+"""This function calculates two users" quotation index
 It receives two user name and return their quotation index
 For the algorithm, please refer to the report
 
@@ -1581,37 +1583,38 @@ Written by Yunfei LIU Nov 13, 2020"""
 def QuotationIndex(user1, user2):
     # This function receives a user name and return the post list
     def UserInfo(userName):
-        user = open('user.txt')
+        user = open("user.txt")
         userInfoList = []
         for userInfo in user:
             userInfoList.append(userInfo.strip())
         nameList = []
         postList = []
         for userInfo in userInfoList:
-            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+            name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
             nameList.append(name)
             postList.append(post)
         try:
             userIndex = nameList.index(userName)
         except ValueError:
             return []
-        userPostList = postList[userIndex].split(';')
+        userPostList = postList[userIndex].split(";")
         return userPostList
 
-    # This function receives a user's post and return the resource list
+    # This function receives a user"s post and return the resource list
     def UserQuoteList(postList):
         quoteList = []
         for post in postList:
             try:
-                postData = open('post/' + post + '.txt', encoding='UTF-8')
+                if post != '':
+                    postData = open("post/" + post + ".txt", encoding="UTF-8")
+                    line1 = postData.readline()
+                    line2 = postData.readline()
+                    line3 = postData.readline()
+                    quotation = line3.strip()
+                    postData.close()
+                    quoteList.append(quotation)
             except IOError:
-                return []
-            line1 = postData.readline()
-            line2 = postData.readline()
-            line3 = postData.readline()
-            quotation = line3.strip()
-            postData.close()
-            quoteList.append(quotation)
+                continue
         return quoteList
 
     user1Quote = UserQuoteList(UserInfo(user1))
@@ -1619,7 +1622,7 @@ def QuotationIndex(user1, user2):
     if len(user1Quote) == 0 or len(user2Quote) == 0:
         return 0
 
-    # Calculate users' quotation in each other
+    # Calculate users" quotation in each other
     user1Quotation = 0
     user2Quotation = 0
     for resource in user1Quote:
@@ -1652,7 +1655,7 @@ def Report(anchor):
         reportList = []
         for postFile in postFileList:
             try:
-                readFile = open("post/" + postFile, encoding='UTF-8')
+                readFile = open("post/" + postFile, encoding="UTF-8")
             except IOError:
                 print("Cannot open the file")
                 return []
@@ -1698,8 +1701,8 @@ def Report(anchor):
     return reportList
 
 
-"""This function calculates a user's impact index
-It receives a user name and return this user's impact index
+"""This function calculates a user"s impact index
+It receives a user name and return this user"s impact index
 For the algorithm, please refer to the report
 
 Written by Yunfei LIU Nov 11, 2020"""
@@ -1707,14 +1710,14 @@ Written by Yunfei LIU Nov 11, 2020"""
 
 def UserImpactIndex(userName):
     # Get Data
-    user = open('user.txt')
+    user = open("user.txt")
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
     nameList = []
     postList = []
     for userInfo in userInfoList:
-        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
         nameList.append(name)
         postList.append(post)
 
@@ -1723,10 +1726,10 @@ def UserImpactIndex(userName):
         userIndex = nameList.index(userName)
     except ValueError:
         return 0
-    # Get the user's posts
-    userPostList = postList[userIndex].split(';')
+    # Get the user"s posts
+    userPostList = postList[userIndex].split(";")
 
-    # Calculate all the posts impact index and user's impact index
+    # Calculate all the posts impact index and user"s impact index
     impactSum = 0
     for title in userPostList:
         impactSum += float(PostImpactIndex(title))
@@ -1746,13 +1749,13 @@ def KOL(miniIndex, percentage):
     percentage = float(percentage)
     if percentage > 100 or percentage < 0:
         return []
-    user = open('user.txt')
+    user = open("user.txt")
     userInfoList = []
     for userInfo in user:
         userInfoList.append(userInfo.strip())
     nameList = []
     for userInfo in userInfoList:
-        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(','))
+        name, firstname, lastname, password, birthday, phoneNumber, friend, post = map(str, userInfo.split(","))
         nameList.append(name)
 
     # Calculate impact index
@@ -1786,86 +1789,86 @@ def main():
     print("Copyright 2020 Mu Yuan LI, Owen CHAN, Yun Fei LIU\nAll rights reserved.\n\n")
     while True:
         modeChar = str(input("Enter 'C' for command line mode, 'G' for GUI, 'E' for exit: "))
-        if modeChar == 'E':
+        if modeChar == "E":
             return 0
-        if modeChar == 'G':
+        if modeChar == "G":
             GUI()
             return 0
-        if modeChar == 'C':
+        if modeChar == "C":
             while True:
                 funcChar = str(input(
                     "\nEnter 'A' for advanced functions, 'B' for basic functions, 'R' for return to previous menu: "))
-                if funcChar == 'R':
+                if funcChar == "R":
                     break
-                if funcChar == 'A':
+                if funcChar == "A":
                     print("\n1.UserImpactIndex\n2.PostImpactIndex\n3.FriendshipIndex\n4.QuotationIndex\n5.FindKOL\n")
                     choiceChar = str(input("Please enter numbers to use functions, other to return: "))
-                    if choiceChar == '1':
+                    if choiceChar == "1":
                         userName = str(input("\nEnter the user name: "))
                         print("The impact index for %s is %s\n" % (userName, UserImpactIndex(userName)))
-                    elif choiceChar == '2':
+                    elif choiceChar == "2":
                         post = str(input("\nEnter the post title: "))
                         print("The impact index for %s is %s\n" % (post, PostImpactIndex(post)))
-                    elif choiceChar == '3':
+                    elif choiceChar == "3":
                         userName1 = str(input("\nEnter user name 1: "))
                         userName2 = str(input("\nEnter user name 2: "))
                         print("\nThe friendship index between %s and %s is %s" % (
                         userName1, userName2, FriendshipIndex(userName1, userName2)))
-                    elif choiceChar == '4':
+                    elif choiceChar == "4":
                         userName1 = str(input("\nEnter user name 1: "))
                         userName2 = str(input("\nEnter user name 2: "))
                         print("\nThe quotation index between %s and %s is %s" % (
                         userName1, userName2, QuotationIndex(userName1, userName2)))
-                    elif choiceChar == '5':
+                    elif choiceChar == "5":
                         miniIndex = float(input("Please enter the minimum index of KOL: "))
                         percentage = float(input("Please enter the percentage of KOL: "))
                         print("\nThe KOL list\n")
                         for i in KOL(miniIndex, percentage):
                             print("Name:%s\nImpact Index:%s\n" % (i[0], i[1]))
 
-                if funcChar == 'B':
+                if funcChar == "B":
                     print(
                         "1.Anchor\n2.DirectReport\n3.GetA\n4.GetU\n5.IsDirectSource\n6.IsSource\n7.IsFriend\n8"
                         ".NicePrintA\n9.NicePrintU\n10.Report\n")
                     choiceChar = str(input("Please enter numbers to use functions, other to return: "))
-                    if choiceChar == '1':
+                    if choiceChar == "1":
                         post = str(input("Please enter the post title: "))
                         print("The anchor of post '%s' is '%s'\n" %(post,Anchor(post)))
-                    elif choiceChar == '2':
+                    elif choiceChar == "2":
                         post = str(input("\nEnter the post title: "))
                         reportList = DirectReport(post)
-                        print("Direct report of post '%s'" % post)
+                        print("The following are the direct reports of post '%s'" % post)
                         for item in reportList:
                             print(item)
-                    elif choiceChar == '3':
+                    elif choiceChar == "3":
                         GetA()
-                    elif choiceChar == '4':
+                    elif choiceChar == "4":
                         GetU()
-                    elif choiceChar == '5':
+                    elif choiceChar == "5":
                         post1 = str(input("\nEnter source title: "))
                         post2 = str(input("\nEnter report title: "))
                         print("%s is the direct source of %s ? " % (post1, post2), end='')
                         print(IsDirectSource(post1, post2))
-                    elif choiceChar == '6':
+                    elif choiceChar == "6":
                         post1 = str(input("\nEnter source title: "))
                         post2 = str(input("\nEnter report title: "))
                         print("%s is the source of %s ? " % (post1, post2), end='')
                         print(IsSource(post1, post2))
-                    elif choiceChar == '7':
+                    elif choiceChar == "7":
                         userName1 = str(input("\nEnter user name 1: "))
                         userName2 = str(input("\nEnter user name 2: "))
                         print("%s and %s are friends? " % (userName1, userName2), end='')
                         print(IsFriend(userName1, userName2))
-                    elif choiceChar == '8':
+                    elif choiceChar == "8":
                         post = str(input("\nEnter the post title: "))
                         NicePrintA(post)
-                    elif choiceChar == '9':
+                    elif choiceChar == "9":
                         userName = str(input("\nEnter the user name: "))
                         NicePrintU(userName)
-                    elif choiceChar == '10':
+                    elif choiceChar == "10":
                         post = str(input("\nEnter the post title: "))
                         reportList = Report(post)
-                        print("Report of post '%s'" % post)
+                        print("The following are the reports of post '%s'" % post)
                         for item in reportList:
                             print(item)
 

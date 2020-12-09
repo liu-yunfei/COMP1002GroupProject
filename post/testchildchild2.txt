@@ -1,4 +1,4 @@
 testchildchild2
-no author
+tester1
 testchild2
 testchildchild2 file
