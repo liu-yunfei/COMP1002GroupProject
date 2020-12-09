@@ -1,3 +1,29 @@
+"""
+Group 16 Mini Project
+
+Group Member:
+Mu Yuan LI 20084337D
+Shun Chit Owen CHAN 20052991D
+Yun Fei LIU 20075899D
+
+Declaration
+ALL code are original.
+The program will open source after the end this semester.
+The collaboration is conducted via GitHub.
+The link of repository is https://github.com/liu-yunfei/COMP1002GroupProject (Will release to public after the end of this semester)
+
+Before the release of code, Mu Yuan LI, Shun Chit Owen CHAN and Yun Fei LIU reserve all rights.
+
+"""
+
+"""
+This function is the GUI of the program
+Refers to https://www.tutorialspoint.com/python/python_gui_programming.htm
+https://www.geeksforgeeks.org/python-gui-tkinter/
+
+Written by Yunfei LIU Nov 28, 2020
+Edited by Yunfei LIU Dec 9, 2020
+"""
 def GUI():
     import tkinter as tk
 
@@ -1364,6 +1390,8 @@ Edited by Yunfei LIU Oct 31, 2020"""
 
 
 def IsSource(sourcePost, reportPost):
+
+    #This part refers to IsDirectsource()
     def DirectSource(post):
         try:
             postData = open("post/" + post + ".txt", encoding="UTF-8")
