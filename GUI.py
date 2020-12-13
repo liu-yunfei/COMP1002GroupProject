@@ -427,6 +427,7 @@ def GUI():
             titleVar = tk.StringVar(GA)
             authorVar = tk.StringVar(GA)
             quoteVar = tk.StringVar(GA)
+            dateVar = tk.StringVar(GA)
             contentVar = tk.StringVar(GA)
 
             emptyLabel3 = tk.Label(middleLeft, text="", font=("Arial", 6)).pack()
@@ -438,15 +439,18 @@ def GUI():
             GUIGetA.authorEntry = tk.Entry(middleRight, show=None, textvariable=authorVar).pack()
             quoteLabel = tk.Label(middleLeft, text="Quotation").pack()
             GUIGetA.quoteEntry = tk.Entry(middleRight, show=None, textvariable=quoteVar).pack()
+            dateLabel = tk.Label(middleLeft, text="Date").pack()
+            GUIGetA.dateEntry = tk.Entry(middleRight, show=None, textvariable=dateVar).pack()
 
             contentLabel = tk.Label(middleLeft, text="Content").pack()
-            GUIGetA.contentText = tk.Text(middleBottom, height=7)
+            GUIGetA.contentText = tk.Text(middleBottom, height=6)
             GUIGetA.contentText.pack()
 
             def GetData():
                 title = titleVar.get()
                 author = authorVar.get()
                 quote = quoteVar.get()
+                date = dateVar.get()
                 content = GUIGetA.contentText.get("1.0", "end-1c")
                 if title != "" and author != "" and content != "":
                     if quote == "":
@@ -801,18 +805,20 @@ def GUI():
                 try:
                     post = open("post/" + str(postName) + ".txt", encoding="UTF-8")
                 except IOError:
-                    return ["", "", "", [""]]
+                    return ["", "", "", "", [""]]
                 titleString = post.readline()
                 title = titleString.strip()
                 authorString = post.readline()
                 author = authorString.strip()
                 quoteString = post.readline()
                 quote = quoteString.strip()
+                dateString = post.readline()
+                date = dateString.strip()
                 content = []
                 for contentLine in post:
                     content.append(contentLine)
                 post.close()
-                return [title, author, quote, content]
+                return [title, author, quote, date, content]
 
             NPA = tk.Tk()
             NPA.title("Nice Print Article")
@@ -842,6 +848,7 @@ def GUI():
             titleVar = tk.StringVar(NPA)
             authorVar = tk.StringVar(NPA)
             quoteVar = tk.StringVar(NPA)
+            dateVar = tk.StringVar(NPA)
             contentVar = tk.StringVar(NPA)
 
             emptyLabel3 = tk.Label(middleLeft, text="", font=("Arial", 6)).pack()
@@ -853,9 +860,11 @@ def GUI():
             authorEntry = tk.Entry(middleRight, show=None, textvariable=authorVar).pack()
             quoteLabel = tk.Label(middleLeft, text="Quotation").pack()
             quoteEntry = tk.Entry(middleRight, show=None, textvariable=quoteVar).pack()
+            dateLabel = tk.Label(middleLeft, text="Date").pack()
+            dateEntry = tk.Entry(middleRight, show=None, textvariable=dateVar).pack()
 
             contentLabel = tk.Label(middleLeft, text="Content").pack()
-            GUINicePrintA.contentText = tk.Text(middleBottom, height=7)
+            GUINicePrintA.contentText = tk.Text(middleBottom, height=6)
             GUINicePrintA.contentText.pack()
 
             def GetData():
@@ -864,8 +873,9 @@ def GUI():
                 userData = EditNicePrintA(postName)
                 authorVar.set(userData[1])
                 quoteVar.set(userData[2])
+                dateVar.set(userData[3])
                 GUINicePrintA.contentText.delete("1.0", "end")
-                for item in userData[3]:
+                for item in userData[4]:
                     GUINicePrintA.contentText.insert("end", item)
 
             printButton = tk.Button(middleBottom, text="Print Post", command=GetData, font=("Arial", 16), width=20,
@@ -1006,6 +1016,7 @@ def DirectReport(anchor):
         title = fileTitle.strip()
         fileAuthor = readFile.readline()
         fileQuote = readFile.readline()
+        fileDate = readFile.readline()
         report = fileQuote.strip()
         if report == anchor:
             if ord(title[0]) == 65279:
@@ -1107,6 +1118,7 @@ def GetA():
             # Add other information
             author = str(input("Please enter the author: "))
             quote = str(input("Please enter the quotation. Or enter 'null' if no quotation: "))
+            date = str(input("Please enter the date:"))
             print("Please enter the content, end with EOF(just type Ctrl+D or Ctrl+Z or Ctrl+C)\n")
             content = []
             while True:
@@ -1115,7 +1127,7 @@ def GetA():
                 except:
                     break
             print("Check your title, author and quote:\n")
-            print("Title:%s\nAuthor:%s\nQuote:%s\n " % (title, author, quote))
+            print("Title:%s\nAuthor:%s\nQuote:%s\nDate:%s\n " % (title, author, quote, date))
 
             # Let admin have a check
             commandChar = str(input("Please check the format carefully and enter [Y/y] to confirm, others to cancel: "))
@@ -1125,7 +1137,7 @@ def GetA():
                 except IOError:
                     print("Failed to create the file\n")
                     return False
-                writeFile.write("%s\n%s\n%s\n" % (title, author, quote))
+                writeFile.write("%s\n%s\n%s\n%s\n" % (title, author, quote, date))
                 for line in content:
                     writeFile.write("%s" % line)
                 writeFile.close()
@@ -1451,6 +1463,8 @@ def NicePrintA(postName):
     author = authorString.strip()
     quoteString = post.readline()
     quote = quoteString.strip()
+    dateString = post.readline()
+    date = dateString.strip()
     content = []
     for contentLine in post:
         content.append(contentLine)
@@ -1460,6 +1474,7 @@ def NicePrintA(postName):
     print("Title: " + title[1:])
     print("Author: " + author)
     print("Quote: " + quote)
+    print("Date: " + date)
     print("The following are the content: \n")
     for contentLine in content:
         print(contentLine)
@@ -1557,6 +1572,7 @@ def PostImpactIndex(anchor):
             title = fileTitle.strip()
             fileAuthor = readFile.readline()
             fileQuote = readFile.readline()
+            fileDate = readFile.readline()
             report = fileQuote.strip()
             if report == anchor:
                 if ord(title[0]) == 65279:
@@ -1704,6 +1720,7 @@ def Report(anchor):
             title = fileTitle.strip()
             fileAuthor = readFile.readline()
             fileQuote = readFile.readline()
+            fileDate = readfile.readline()
             report = fileQuote.strip()
             if report == anchor:
                 if ord(title[0]) == 65279:
