@@ -1720,7 +1720,7 @@ def Report(anchor):
             title = fileTitle.strip()
             fileAuthor = readFile.readline()
             fileQuote = readFile.readline()
-            fileDate = readfile.readline()
+            fileDate = readFile.readline()
             report = fileQuote.strip()
             if report == anchor:
                 if ord(title[0]) == 65279:
